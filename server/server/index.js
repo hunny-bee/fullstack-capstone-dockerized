@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+const authRoutes = require('../server/routes/authRoutes'); // Import auth routes
+const userRoutes = require('../server/routes/useRoutes');
 
 require("dotenv").config();
 
@@ -14,6 +16,9 @@ const port =
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
+app.use('/api/auth', authRoutes);  
+app.use('/api/user', userRoutes);
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
