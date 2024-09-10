@@ -1,6 +1,7 @@
 const express = require("express");
+// const passport = require('../server/config/passport');
 const cors = require("cors");
-const authRoutes = require('../server/routes/authRoutes'); // Import auth routes
+const authRoutes = require('../server/routes/authRoutes'); 
 const userRoutes = require('../server/routes/useRoutes');
 
 require("dotenv").config();
@@ -16,6 +17,12 @@ const port =
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+// app.use(session({
+//   secret: process.env.SESSION_SECRET, 
+//   resave: false,
+//   saveUninitialized: true,
+//   cookie: { secure: false } 
+// }));
 
 app.use('/api/auth', authRoutes);  
 app.use('/api/user', userRoutes);
