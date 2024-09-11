@@ -18,6 +18,7 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
+    "Capstone-Server": "file:",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
@@ -25,7 +26,8 @@
     "mongodb": "^4.1.2",
     "mongoose": "^6.0.7",
     "passport": "^0.7.0",
-    "passport-google-oauth20": "^2.0.0"
+    "passport-google-oauth20": "^2.0.0",
+    "validator": "^13.12.0"
   },
   "devDependencies": {
     "chai": "^4.3.4",

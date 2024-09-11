@@ -29,14 +29,14 @@ exports.authMiddleware = async (req, res, next) => {
   };
   
   exports.adminMiddleware = (req, res, next) => {
-    if (req.user.role !== 'admin') return res.status(403).json({ message: 'Access denied' });
+    if (req.user.role !== 'host') return res.status(403).json({ message: 'Access denied' });
     next();
   };
   
 
   exports.selfOrAdminMiddleware = (req, res, next) => {
     const isSelf = req.user._id.toString() === req.params.id;
-    if (isSelf || req.user.role === 'admin') {
+    if (isSelf || req.user.role === 'host') {
       next();
     } else {
       res.status(403).json({ message: 'Access denied' });

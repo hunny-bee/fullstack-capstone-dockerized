@@ -2,16 +2,16 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
 
-// In your user controller
+
 exports.signup = async (req, res) => {
     const { name, email, password, role } = req.body;
     
     try {
-      // Check if the user is trying to create an admin
+      
       if (role === 'admin') {
-        // Ensure the user is an existing admin
-        const existingAdmin = req.user; // req.user should be set by authMiddleware
-        if (!existingAdmin || existingAdmin.role !== 'admin') {
+        
+        const existingAdmin = req.user; 
+        if (!existingAdmin || existingAdmin.role !== 'host') {
           return res.status(403).json({ message: 'Only admins can create new admins' });
         }
       }
