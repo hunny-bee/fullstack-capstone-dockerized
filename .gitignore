@@ -6,6 +6,13 @@ node_modules
 .pnp.js
 .yarn/install-state.gz
 
+/Users/User/AppData/Local/npm-cache/_logs
+
+npm-cache/
+/Users/User/AppData/Local/npm-cache/
+
+
+
 # testing
 /coverage
 
@@ -15,7 +22,7 @@ node_modules
 
 # production
 /build
-
+UsersUserAppDataLocalnpm-cache/
 # misc
 .DS_Store
 *.pem
