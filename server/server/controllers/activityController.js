@@ -1,6 +1,6 @@
 const Activity = require('../models/ActivitySchema');
 
-// Create a new activity
+
 exports.createActivity = async (req, res) => {
   const { name, description, location } = req.body;
 
@@ -22,7 +22,7 @@ exports.createActivity = async (req, res) => {
   }
 };
 
-// Update activity by ID 
+
 exports.updateActivity = async (req, res) => {
   const { name, description, location } = req.body;
 
@@ -40,7 +40,7 @@ exports.updateActivity = async (req, res) => {
   }
 };
 
-// Delete activity
+
 exports.deleteActivity = async (req, res) => {
   try {
     const deletedActivity = await Activity.findByIdAndDelete(req.params.id);
@@ -51,7 +51,7 @@ exports.deleteActivity = async (req, res) => {
   }
 };
 
-// Get activities
+
 exports.getAllActivities = async (req, res) => {
   try {
     const activities = await Activity.find();
