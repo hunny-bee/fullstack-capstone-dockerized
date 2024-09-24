@@ -25,7 +25,7 @@ exports.createProperty = async (req, res) => {
   }
 };
 
-// Get property by ID
+
 exports.getPropertyById = async (req, res) => {
   try {
     const property = await Property.findById(req.params.id).populate('host', 'name');
@@ -38,7 +38,7 @@ exports.getPropertyById = async (req, res) => {
   }
 };
 
-// Get all properties (with filters)
+
 exports.getAllProperties = async (req, res) => {
   try {
     const { city, country, minPrice, maxPrice, activity } = req.query;
@@ -56,7 +56,7 @@ exports.getAllProperties = async (req, res) => {
   }
 };
 
-// Update a property
+
 exports.updateProperty = async (req, res) => {
   try {
     const updates = req.body;
