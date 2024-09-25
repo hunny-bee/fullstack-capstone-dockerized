@@ -1,3 +1,6 @@
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
+
 const PaymentSchema = new Schema({
     booking: {
       type: Schema.Types.ObjectId,

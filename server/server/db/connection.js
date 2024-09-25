@@ -1,15 +1,10 @@
 const mongoose = require("mongoose");
+require('dotenv').config();
 
-const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME, TEST_DB_HOST } =
-  process.env;
-
-const DB_URI = `mongodb://${DB_USER}:${DB_PASSWORD}@${
-  process.env.NODE_ENV === "test" ? TEST_DB_HOST : DB_HOST
-}:${DB_PORT}/${DB_NAME}?authSource=admin`;
-
-const url = DB_URI;
+const url = process.env.MONGO_URI;
 
 const connectToMongo = () => {
+  mongoose.set('strictQuery', false);
   mongoose.connect(url, { useNewUrlParser: true });
 
   db = mongoose.connection;
@@ -24,4 +19,3 @@ const connectToMongo = () => {
 };
 
 module.exports = connectToMongo;
-
