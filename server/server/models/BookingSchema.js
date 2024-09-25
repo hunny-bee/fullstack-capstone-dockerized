@@ -1,3 +1,6 @@
+const mongoose = require('mongoose');
+const { Schema } = mongoose
+
 const BookingSchema = new Schema({
     property: {
       type: Schema.Types.ObjectId,
