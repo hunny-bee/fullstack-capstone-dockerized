@@ -1,48 +1,127 @@
 'use client';
 
-import React, { useEffect, useState } from "react";
-import { AiOutlineHome, AiOutlineUser } from "react-icons/ai";
-import { signOut } from "next-auth/react";
+import React, { useState, useEffect, useRef } from 'react';
+import { AiOutlineHome, AiOutlineMenu, AiOutlineUser } from 'react-icons/ai';
+import { BiSearch } from 'react-icons/bi';
 import Link from 'next/link';
+import CheckIn from '../checkin/CheckIn';
+import CheckOut from '../checkout/CheckOut';
 
 const NavBar = () => {
-  const [showModal, setShowModal] = useState(true);
+  const [showDropdown, setShowDropdown] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const dropdownRef = useRef(null);
 
-  const toggleModal = () => setShowModal((prev) => !prev);
+  
+  const toggleDropdown = () => setShowDropdown((prev) => !prev);
+
+  
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   useEffect(() => {
-    window.onscroll = () => {
-      setIsScrolled(window.pageYOffset === 0 ? false : true);
-      return () => (window.onscroll = null);
-    };
+    const handleScroll = () => setIsScrolled(window.pageYOffset > 0);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <div className={`fixed z-20 h-16 top-0 left-0 ${isScrolled ? "shadow-md backdrop-blur" : ""}`}>
-      <div className="h-full w-2/3 mx-auto flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 transition-all">
-          <h1 className={`${isScrolled ? "text-yellow-600" : "text-[#cec7c7]"} text-2xl font-bold`}>
-            StayCation
-            <AiOutlineHome size={25} color={isScrolled ? "rgba(37, 99, 235)" : "#cec7c7"} />
-          </h1>
-        </Link>
-        <div>
-          <div className="cursor-pointer" onClick={toggleModal}>
-            <AiOutlineUser size={30} color={isScrolled ? "rgba(37, 99, 235)" : "#cec7c7"} />
-            {showModal && (
-              <div
-                onClick={toggleModal}
-                className="absolute top-16 right-[270px] shadow-md flex flex-col gap-4 p-4 bg-white rounded-xl"
-              >
-                <Link href="/bookings">
-                  Bookings
+    <div className={`fixed w-full z-20 top-0 left-0 transition-all ${isScrolled ? 'shadow-md backdrop-blur bg-white' : ''}`}>
+      
+      <div className="h-16 w-full flex items-center justify-between px-8 md:px-20 lg:px-32 bg-white">
+        
+        <div className="flex items-center">
+          <Link href="/" className="flex items-center gap-2">
+            <AiOutlineHome size={30} color="black" />
+            <h1 className="text-[#e5d84a] text-2xl font-bold">StayCation</h1>
+          </Link>
+        </div>
+
+        
+        <div className="hidden md:flex items-center gap-8">
+          <Link href="/stays" className="text-sm font-medium text-black hover:text-gray-700">
+            Stays
+          </Link>
+          <Link href="/experiences" className="text-sm font-medium text-black hover:text-gray-700">
+            Experiences
+          </Link>
+        </div>
+
+      
+        <div className="flex items-center gap-4">
+        
+          <Link href="/host" className="hidden md:block text-sm font-medium text-black hover:text-gray-700">
+            Airbnb your home
+          </Link>
+
+        
+          <div className="relative" ref={dropdownRef}>
+            <div className="cursor-pointer flex items-center gap-2" onClick={toggleDropdown}>
+              <AiOutlineMenu size={20} />
+              <AiOutlineUser size={24} />
+            </div>
+
+            {showDropdown && (
+              <div className="absolute right-0 mt-2 shadow-lg bg-white rounded-xl w-56 p-4 text-sm text-gray-700 z-10">
+                <Link href="/signup" className="block px-4 py-2 hover:bg-gray-100">
+                  Sign Up
                 </Link>
-                <button onClick={() => signOut()} className="text-slate-500 text-center">
-                  Logout
-                </button>
+                <Link href="/login" className="block px-4 py-2 hover:bg-gray-100">
+                  Log in
+                </Link>
+                <hr className="my-2" />
+                <Link href="/host" className="block px-4 py-2 hover:bg-gray-100">
+                  Airbnb your home
+                </Link>
+                <Link href="/host-experience" className="block px-4 py-2 hover:bg-gray-100">
+                  Host an experience
+                </Link>
+                <Link href="/help" className="block px-4 py-2 hover:bg-gray-100">
+                  Help Center
+                </Link>
               </div>
             )}
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-4">
+        <div className="flex justify-center">
+          <div className="flex items-center bg-white border border-gray-300 rounded-full px-4 py-2 shadow-sm w-11/12 lg:w-2/3 justify-between">
+      
+            <input
+              type="text"
+              placeholder="Search destinations"
+              className="bg-transparent outline-none text-sm text-gray-600 placeholder-gray-400 w-1/3"
+            />
+
+            <span className="h-8 border-l border-gray-300 mx-4"></span>
+
+            <CheckIn />
+            <span className="h-8 border-l border-gray-300 mx-4"></span>
+            <CheckOut />
+
+            <span className="h-8 border-l border-gray-300 mx-4"></span>
+
+            <input
+              type="number"
+              min="1"
+              className="bg-transparent outline-none text-sm text-gray-600 placeholder-gray-400 w-1/6"
+              placeholder="Add guests"
+            />
+
+
+            <button className="bg-[#e5d84a] hover:bg-[#e5d84a] rounded-full p-2 ml-2">
+              <BiSearch size={20} className="text-white" />
+            </button>
           </div>
         </div>
       </div>
