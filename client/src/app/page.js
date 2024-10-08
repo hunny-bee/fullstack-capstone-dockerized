@@ -1,11 +1,9 @@
 
 import NavBar from "@/components/navbar/NavBar";
 import Test from "../components/Test";
-
-
+import HeroSection from "./components/Hero Section/HeroSection";
 import Footer from './components/Footer';
 import './globals.css';
-
 
 
 export default function Home() {
@@ -14,8 +12,7 @@ export default function Home() {
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
         <Test />
         {/* <NavBar/> */}
-
-      
+        <HeroSection/>
         <Footer />
       </div>
     </main>
