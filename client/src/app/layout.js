@@ -1,6 +1,8 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/navbar/NavBar";
+import Footer from "@/components/Footer";
+import HeroSection from "./components/Hero Section/HeroSection";
 
 
 
@@ -15,6 +17,8 @@ export default function RootLayout({ children }) {
   return (
     <div>
       <NavBar/>
+      <HeroSection/>
+      <Footer/>
       <main>{children}</main>
     </div>
   );
