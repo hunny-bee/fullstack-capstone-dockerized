@@ -16,9 +16,7 @@ npm-cache/
 # testing
 /coverage
 
-# next.js
-/.next/
-/out/
+
 
 # production
 /build
@@ -41,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# next.js
+/.next/
+/out/
+

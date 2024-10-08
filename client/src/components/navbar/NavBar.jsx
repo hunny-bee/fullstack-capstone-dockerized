@@ -12,7 +12,6 @@ const NavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const dropdownRef = useRef(null);
 
-  
   const toggleDropdown = () => setShowDropdown((prev) => !prev);
 
   
@@ -34,9 +33,9 @@ const NavBar = () => {
   }, []);
 
   return (
-    <div className={`fixed w-full z-20 top-0 left-0 transition-all ${isScrolled ? 'shadow-md backdrop-blur bg-white' : ''}`}>
+    <div className={`fixed w-full z-20 top-0 left-0 transition-all duration-300 ${isScrolled ? 'shadow-md backdrop-blur bg-white' : 'bg-transparent'}`}>
       
-      <div className="h-16 w-full flex items-center justify-between px-8 md:px-20 lg:px-32 bg-white">
+      <div className="h-16 w-full flex items-center justify-between px-8 md:px-20 lg:px-32">
         
         <div className="flex items-center">
           <Link href="/" className="flex items-center gap-2">
@@ -45,32 +44,29 @@ const NavBar = () => {
           </Link>
         </div>
 
-        
         <div className="hidden md:flex items-center gap-8">
-          <Link href="/stays" className="text-sm font-medium text-black hover:text-gray-700">
+          <Link href="/stays" className="text-base font-medium text-black hover:text-gray-700">
             Stays
           </Link>
-          <Link href="/experiences" className="text-sm font-medium text-black hover:text-gray-700">
+          <Link href="/experiences" className="text-base font-medium text-black hover:text-gray-700">
             Experiences
           </Link>
         </div>
 
-      
         <div className="flex items-center gap-4">
-        
           <Link href="/host" className="hidden md:block text-sm font-medium text-black hover:text-gray-700">
-            Airbnb your home
+            StayCation your home
           </Link>
 
-        
           <div className="relative" ref={dropdownRef}>
             <div className="cursor-pointer flex items-center gap-2" onClick={toggleDropdown}>
               <AiOutlineMenu size={20} />
               <AiOutlineUser size={24} />
             </div>
 
+            {/* Dropdown Menu */}
             {showDropdown && (
-              <div className="absolute right-0 mt-2 shadow-lg bg-white rounded-xl w-56 p-4 text-sm text-gray-700 z-10">
+              <div className="absolute right-0 mt-2 shadow-lg bg-white rounded-xl w-56 p-4 text-sm text-gray-700 z-50">
                 <Link href="/signup" className="block px-4 py-2 hover:bg-gray-100">
                   Sign Up
                 </Link>
@@ -79,7 +75,7 @@ const NavBar = () => {
                 </Link>
                 <hr className="my-2" />
                 <Link href="/host" className="block px-4 py-2 hover:bg-gray-100">
-                  Airbnb your home
+                  StayCation your home
                 </Link>
                 <Link href="/host-experience" className="block px-4 py-2 hover:bg-gray-100">
                   Host an experience
@@ -96,7 +92,6 @@ const NavBar = () => {
       <div className="mt-4">
         <div className="flex justify-center">
           <div className="flex items-center bg-white border border-gray-300 rounded-full px-4 py-2 shadow-sm w-11/12 lg:w-2/3 justify-between">
-      
             <input
               type="text"
               placeholder="Search destinations"
@@ -117,7 +112,6 @@ const NavBar = () => {
               className="bg-transparent outline-none text-sm text-gray-600 placeholder-gray-400 w-1/6"
               placeholder="Add guests"
             />
-
 
             <button className="bg-[#e5d84a] hover:bg-[#e5d84a] rounded-full p-2 ml-2">
               <BiSearch size={20} className="text-white" />
