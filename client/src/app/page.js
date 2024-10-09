@@ -2,7 +2,7 @@
 import NavBar from "@/components/navbar/NavBar";
 import Test from "../components/Test";
 import HeroSection from "./components/Hero Section/HeroSection";
-import Footer from "@/components/Footer";
+import Footer from "@/components/footer/Footer";
 import './globals.css';
 
 
