@@ -1,11 +1,5 @@
-import React from 'react'
+import SignupPage from "@/components/ui/SignupPage";
 
-const SignUp = () => {
-  return (
-    <div>
-      SignUp
-    </div>
-  )
+export default function Signup() {
+  return <SignupPage />;
 }
-
-export default SignUp

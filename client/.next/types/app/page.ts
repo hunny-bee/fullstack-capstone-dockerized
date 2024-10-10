@@ -1,4 +1,4 @@
-// File: C:\Users\User\Desktop\fullstack-capstone-dockerized\client\src\app\page.js
+// File: C:\Users\User\Desktop\ProjectY\capstone\fullstack-capstone-dockerized\client\src\app\page.js
 import * as entry from '../../../src/app/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
