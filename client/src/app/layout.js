@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
   return (
     <div>
       <NavBar/>
-      <HeroSection/>
+      {/* <HeroSection/> */}
       
       <main>{children}</main>
       <Footer/>
