@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -29,7 +29,7 @@ const Navbar = () => {
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
   };
-  
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     setIsLoggedIn(false);
@@ -40,13 +40,13 @@ const Navbar = () => {
     <nav className="bg-white shadow-md">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4">
-          <Link href="/" className="text-2xl font-bold text-yellow-500">
+          <Link href="/" className="text-3xl font-bold text-red-500">
             Staycation
           </Link>
 
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-6">
             <Link href="/listings">
-              <Button variant="ghost">{t('Listings')}</Button>
+              <Button variant="ghost" className="hover:bg-red-100">{t('Listings')}</Button>
             </Link>
             <Input
               type="text"
@@ -55,7 +55,7 @@ const Navbar = () => {
               icon={<Search className="h-4 w-4" />}
             />
             <Link href="/listings/create">
-              <Button variant="ghost">{t('Become a host')}</Button>
+              <Button variant="ghost" className="hover:bg-red-100">{t('Become a host')}</Button>
             </Link>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -64,15 +64,9 @@ const Navbar = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem onClick={() => changeLanguage('en')}>
-                  English
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => changeLanguage('es')}>
-                  Español
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => changeLanguage('fr')}>
-                  Français
-                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => changeLanguage('en')}>English</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => changeLanguage('es')}>Español</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => changeLanguage('fr')}>Français</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
             {isLoggedIn ? (
@@ -93,10 +87,10 @@ const Navbar = () => {
             ) : (
               <>
                 <Link href="/login">
-                  <Button variant="ghost">{t('Login')}</Button>
+                  <Button variant="ghost" className="hover:bg-red-100">{t('Login')}</Button>
                 </Link>
                 <Link href="/signup">
-                  <Button variant="ghost">{t('Sign Up')}</Button>
+                  <Button variant="ghost" className="hover:bg-red-100">{t('Sign Up')}</Button>
                 </Link>
               </>
             )}
@@ -133,15 +127,9 @@ const Navbar = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem onClick={() => changeLanguage('en')}>
-                  English
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => changeLanguage('es')}>
-                  Español
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => changeLanguage('fr')}>
-                  Français
-                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => changeLanguage('en')}>English</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => changeLanguage('es')}>Español</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => changeLanguage('fr')}>Français</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
             {isLoggedIn ? (

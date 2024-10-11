@@ -1,14 +1,20 @@
-
-import './globals.css';
-import Hero from "@/components/ui/Hero";
+import Hero from '@/components/ui/Hero';
+import FeaturedListings from '@/components/ui/FeaturedListings';
+import ExperienceCategories from '@/components/ui/ExperienceCategories';
+import Auth from '@/components/ui/Auth';
+import AIChat from '@/components/ui/AIChat';
+import TrendingListings from '@/components/ui/TrendingListing';
 
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <Hero/>
-      </div>
-    </main>
+    <div className="container mx-auto px-4">
+      <Hero />
+      <FeaturedListings />
+      <ExperienceCategories />
+      <TrendingListings/>
+      <AIChat/>
+      <Auth/>
+    </div>
   );
 }
