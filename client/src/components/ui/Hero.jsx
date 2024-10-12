@@ -23,7 +23,7 @@ const Hero = () => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-red-500 to-red-600 text-white py-20 px-4 rounded-lg my-8">
+    <div className="bg-gradient-to-r from-[#e5d84a] to-[#e5d84a] text-white py-20 px-4 rounded-lg my-8">
       <div className="max-w-3xl mx-auto text-center">
         <h1 className="text-4xl font-bold mb-4">{t('Find your next stay or experience')}</h1>
         <div className="bg-white p-4 rounded-lg shadow-md">
@@ -90,7 +90,7 @@ const Hero = () => {
               min={1}
               className="text-black"
             />
-            <Button onClick={handleSearch} className="mt-4 w-full bg-red-600 hover:bg-red-700 transition">
+            <Button onClick={handleSearch} className="mt-4 w-full bg-[#e5d84a] hover:bg-[#e5d84a] transition">
               {t('Search')}
             </Button>
           </div>

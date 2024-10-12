@@ -40,7 +40,7 @@ const Navbar = () => {
     <nav className="bg-white shadow-md">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4">
-          <Link href="/" className="text-3xl font-bold text-red-500">
+          <Link href="/" className="text-3xl font-bold text-[#e5d84a]">
             Staycation
           </Link>
 
@@ -87,10 +87,10 @@ const Navbar = () => {
             ) : (
               <>
                 <Link href="/login">
-                  <Button variant="ghost" className="hover:bg-red-100">{t('Login')}</Button>
+                  <Button variant="ghost" className="hover:bg-[#e5d84a]">{t('Login')}</Button>
                 </Link>
                 <Link href="/signup">
-                  <Button variant="ghost" className="hover:bg-red-100">{t('Sign Up')}</Button>
+                  <Button variant="ghost" className="hover:bg-[#e5d84a]">{t('Sign Up')}</Button>
                 </Link>
               </>
             )}
