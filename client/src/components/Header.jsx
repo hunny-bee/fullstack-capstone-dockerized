@@ -21,9 +21,9 @@ export default function Header() {
   return (
     <header className="bg-white shadow-sm">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <Link href="/" className="text-2xl font-bold text-primary">
-          Staycation
-        </Link>
+      <Link href="/" className="text-2xl font-bold text-primary">
+            <span className="text-yellow-500">Stay</span>cation
+          </Link>
 
         <nav className="hidden md:flex space-x-4">
           <Link href="/stays" className="text-gray-600 hover:text-primary">
