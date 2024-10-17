@@ -1,8 +1,10 @@
 // Marking this component as a Client Component
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
+import { Heart } from 'lucide-react';
 
 export default function PropertyListing() {
   const { t } = useTranslation();
@@ -12,6 +14,10 @@ export default function PropertyListing() {
     // Fetch properties from API
     fetchProperties();
   }, []);
+
+  const handlePropertyClick = (property) => {
+    navigate(`/property/${property.id}`, { state: { property } });
+  };
 
   const fetchProperties = async () => {
     // Implement API call to fetch properties
@@ -86,17 +92,27 @@ export default function PropertyListing() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {properties.map((property) => (
-        <Card key={property.id}>
-          <CardHeader>
-            <CardTitle>{property.title}</CardTitle>
-            <CardDescription>{property.description}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <img src={property.image} alt={property.title} className="w-full h-48 object-cover rounded-md" />
+        <Card key={property.id} className="overflow-hidden cursor-pointer transition-shadow hover:shadow-lg"
+        onClick={() => handlePropertyClick(property)}>
+          <CardContent className="p-0 relative">
+            <img src={property.image} alt={property.title} className="w-full h-64 object-cover" />
+            <Button variant="ghost" className="absolute top-2 right-2 text-white hover:text-white">
+              <Heart className="h-6 w-6" />
+            </Button>
           </CardContent>
-          <CardFooter className="flex justify-between items-center">
-            <span className="text-lg font-semibold">${property.price} / {t('night')}</span>
-            <Button>{t('book_now')}</Button>
+          <CardFooter className="flex flex-col items-start p-4">
+            <div className="flex justify-between w-full">
+              <h3 className="text-lg font-semibold">{property.title}</h3>
+              <div className="flex items-center">
+                <span className="text-sm mr-1">★</span>
+                <span className="text-sm">4.95</span>
+              </div>
+            </div>
+            <p className="text-sm text-gray-600 mt-1">{property.description}</p>
+            <p className="text-sm text-gray-600 mt-1">Nov 4 - 9</p>
+            <p className="text-sm font-semibold mt-2">
+              ${property.price} <span className="font-normal">{t('night')}</span>
+            </p>
           </CardFooter>
         </Card>
       ))}

@@ -48,7 +48,7 @@ export default function AIChat({ isSignedIn }) {
         </Button>
       )}
       {isOpen && (
-        <div className="fixed bottom-4 right-4 w-80 bg-white shadow-lg rounded-lg overflow-hidden">
+        <div className="fixed bottom-4 right-4 w-80 bg-[#fadb5e] shadow-lg rounded-lg overflow-hidden">
           <div className="bg-primary text-white p-4 flex justify-between items-center">
             <h3 className="font-semibold">AI Assistant</h3>
             <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)}>
@@ -58,7 +58,7 @@ export default function AIChat({ isSignedIn }) {
           <div className="h-80 overflow-y-auto p-4">
             {messages.map((message, index) => (
               <div key={index} className={`mb-2 ${message.sender === 'user' ? 'text-right' : 'text-left'}`}>
-                <span className={`inline-block p-2 rounded-lg ${message.sender === 'user' ? 'bg-primary text-white' : 'bg-gray-200'}`}>
+                <span className={`inline-block p-2 rounded-lg ${message.sender === 'user' ? 'bg-primary text-white' : 'bg-white'}`}>
                   {message.text}
                 </span>
               </div>

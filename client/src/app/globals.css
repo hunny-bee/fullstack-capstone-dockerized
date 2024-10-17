@@ -3,46 +3,79 @@
 @tailwind utilities;
 
 @import '@fortawesome/fontawesome-free/css/all.min.css';
+
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-end-rgb: 0, 0, 0;
-  }
+  --background-rgb: 255, 255, 255;
+  --primary-color: #fadb5e;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: rgb(var(--background-rgb));
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-}
-
-/* styles/globals.css */
-
-.navbar-at-top {
-  background-color: transparent;
-  box-shadow: none;
-  padding: 16px 0;
-  transition: background-color 0.3s ease, padding 0.3s ease;
-}
-
-.navbar-scrolled {
+/* Navbar styles */
+.navbar {
   background-color: white;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 8px 0;
-  transition: background-color 0.3s ease, padding 0.3s ease;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+  padding: 16px 0;
+}
+
+/* Search bar styles */
+.search-bar {
+  border: 1px solid #dddddd;
+  border-radius: 32px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Category buttons */
+.category-button {
+  padding: 8px 16px;
+  border-radius: 24px;
+  transition: all 0.2s;
+}
+
+.category-button:hover {
+  background-color: #f7f7f7;
+}
+
+/* Property cards */
+.property-card {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Primary button */
+.btn-primary {
+  background-color: var(--primary-color);
+  color: #ffffff;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: #e5c654;
+}
+
+/* Favorite button */
+.favorite-button {
+  background-color: white;
+  color: #484848;
+  border: 1px solid #dddddd;
+  padding: 4px 8px;
+  border-radius: 16px;
+  font-size: 12px;
+}
+
+/* Utility classes */
+.text-primary {
+  color: var(--primary-color);
+}
+
+.bg-primary {
+  background-color: var(--primary-color);
 }

@@ -2,102 +2,49 @@
 
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Search, Calendar, Users } from 'lucide-react';
+import { Search } from 'lucide-react';
 
 const SearchBar = () => {
   const { t } = useTranslation();
   const [location, setLocation] = useState('');
-  const [checkIn, setCheckIn] = useState('');
-  const [checkOut, setCheckOut] = useState('');
-  const [guests, setGuests] = useState(1);
+  const [dates, setDates] = useState('');
+  const [guests, setGuests] = useState('');
 
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log('Searching:', { location, checkIn, checkOut, guests });
+    console.log('Searching:', { location, dates, guests });
     // Implement search logic (e.g., navigate or fetch results)
   };
 
   return (
-    <form onSubmit={handleSearch} className="bg-white rounded-lg shadow-md p-6 max-w-4xl mx-auto">
-      <div className="flex flex-wrap -mx-3 mb-4">
-        {/* Location Input */}
-        <div className="w-full md:w-1/4 px-3 mb-4 md:mb-0">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="location">
-            {t('Where')}
-          </label>
-          <div className="relative">
-            <input
-              className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pl-10"
-              id="location"
-              type="text"
-              placeholder={t('Enter destination')}
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-            />
-            <Search className="absolute left-3 top-2 text-gray-400" size={20} />
-          </div>
-        </div>
-
-        {/* Check-in Date Input */}
-        <div className="w-full md:w-1/4 px-3 mb-4 md:mb-0">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="check-in">
-            {t('Check In')}
-          </label>
-          <div className="relative">
-            <input
-              className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pl-10"
-              id="check-in"
-              type="date"
-              value={checkIn}
-              onChange={(e) => setCheckIn(e.target.value)}
-            />
-            <Calendar className="absolute left-3 top-2 text-gray-400" size={20} />
-          </div>
-        </div>
-
-        {/* Check-out Date Input */}
-        <div className="w-full md:w-1/4 px-3 mb-4 md:mb-0">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="check-out">
-            {t('Check Out')}
-          </label>
-          <div className="relative">
-            <input
-              className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pl-10"
-              id="check-out"
-              type="date"
-              value={checkOut}
-              onChange={(e) => setCheckOut(e.target.value)}
-            />
-            <Calendar className="absolute left-3 top-2 text-gray-400" size={20} />
-          </div>
-        </div>
-
-        {/* Guests Input */}
-        <div className="w-full md:w-1/4 px-3 mb-4 md:mb-0">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="guests">
-            {t('Guests')}
-          </label>
-          <div className="relative">
-            <input
-              className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pl-10"
-              id="guests"
-              type="number"
-              min="1"
-              value={guests}
-              onChange={(e) => setGuests(parseInt(e.target.value, 10))}
-            />
-            <Users className="absolute left-3 top-2 text-gray-400" size={20} />
-          </div>
-        </div>
-      </div>
-
-      {/* Submit Button */}
-      <div className="flex justify-center">
+    <form onSubmit={handleSearch} className="max-w-3xl mx-auto">
+      <div className="flex items-center bg-white rounded-full shadow-md">
+        <input
+          className="flex-grow px-6 py-3 rounded-l-full text-gray-700 focus:outline-none"
+          type="text"
+          placeholder={t('Anywhere')}
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+        />
+        <input
+          className="w-40 px-6 py-3 text-gray-700 focus:outline-none border-l border-gray-300"
+          type="text"
+          placeholder={t('Any week')}
+          value={dates}
+          onChange={(e) => setDates(e.target.value)}
+        />
+        <input
+          className="w-40 px-6 py-3 text-gray-700 focus:outline-none border-l border-gray-300"
+          type="text"
+          placeholder={t('Add guests')}
+          value={guests}
+          onChange={(e) => setGuests(e.target.value)}
+        />
         <button
-          className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="bg-pink-500 text-white p-3 rounded-full ml-2 mr-2 hover:bg-pink-600 focus:outline-none"
           type="submit"
         >
-          {t('Search')}
+          <Search size={24} />
         </button>
       </div>
     </form>

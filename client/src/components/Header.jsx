@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation'; // Correct import for useRouter in Next.js App Router
-import { Menu, X, Globe, User } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Search, Globe, User, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -14,30 +14,33 @@ import {
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const router = useRouter(); // Now correctly imported
-
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const router = useRouter();
 
   return (
     <header className="bg-white shadow-sm">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-      <Link href="/" className="text-2xl font-bold text-primary">
-            <span className="text-yellow-500">Stay</span>cation
-          </Link>
+        <Link href="/" className="text-2xl font-bold text-primary">
+          <span className="text-yellow-500">Stay</span>cation
+        </Link>
 
-        <nav className="hidden md:flex space-x-4">
-          <Link href="/stays" className="text-gray-600 hover:text-primary">
-            Stays
-          </Link>
-          <Link href="/experiences" className="text-gray-600 hover:text-primary">
-            Experiences
-          </Link>
-          <Link href="/online-experiences" className="text-gray-600 hover:text-primary">
-            Online Experiences
-          </Link>
-        </nav>
+        <div className="hidden md:flex items-center flex-grow justify-center">
+          <div className="flex items-center border rounded-full p-2 shadow-sm hover:shadow-md transition">
+            <button className="px-4 font-semibold">Anywhere</button>
+            <span className="border-l border-gray-300 h-6"></span>
+            <button className="px-4 font-semibold">Any week</button>
+            <span className="border-l border-gray-300 h-6"></span>
+            <button className="px-4 text-gray-600">Add guests</button>
+            <Button variant="primary" size="icon" className="bg-primary text-white rounded-full">
+              <Search className="h-5 w-5" />
+            </Button>
+          </div>
+        </div>
 
-        <div className="hidden md:flex items-center space-x-4">
+        <div className="flex items-center space-x-4">
+          <Button variant="ghost" className="hidden md:inline-flex">
+            Staycation your home
+          </Button>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon">
@@ -57,31 +60,21 @@ export default function Header() {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Button variant="ghost" size="icon">
-            <User className="h-5 w-5" />
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="icon" className="rounded-full">
+                <Menu className="h-5 w-5 mr-2" />
+                <User className="h-5 w-5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem>Sign up</DropdownMenuItem>
+              <DropdownMenuItem>Log in</DropdownMenuItem>
+              <DropdownMenuItem>Help</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
-
-        <Button variant="ghost" size="icon" className="md:hidden" onClick={toggleMenu}>
-          {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </Button>
       </div>
-
-      {isMenuOpen && (
-        <div className="md:hidden">
-          <nav className="flex flex-col space-y-2 px-4 py-2">
-            <Link href="/stays" className="text-gray-600 hover:text-primary">
-              Stays
-            </Link>
-            <Link href="/experiences" className="text-gray-600 hover:text-primary">
-              Experiences
-            </Link>
-            <Link href="/online-experiences" className="text-gray-600 hover:text-primary">
-              Online Experiences
-            </Link>
-          </nav>
-        </div>
-      )}
     </header>
   );
 }
