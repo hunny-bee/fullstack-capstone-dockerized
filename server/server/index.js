@@ -13,6 +13,7 @@ const userRoutes = require("./routes/userRoutes");
 // const activityRoutes = require("./routes/activityRoutes");
 // const paymentRoutes = require("./routes/paymentRoutes"); // Payment route
 
+
 const app = express();
 const port = process.env.PORT || 3003;
 
