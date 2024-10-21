@@ -51,7 +51,7 @@ export default function SignupPage() {
               style={{ width: '100%', padding: '0.75rem', border: '1px solid #ddd', borderRadius: '4px' }}
             />
           </div>
-          <button type="submit" style={{ width: '100%', padding: '0.75rem', backgroundColor: '#ff385c', color: 'white', borderRadius: '4px', cursor: 'pointer', border: 'none', fontSize: '1rem', fontWeight: '600' }}>
+          <button type="submit" style={{ width: '100%', padding: '0.75rem', backgroundColor: 'yellow', color: 'white', borderRadius: '4px', cursor: 'pointer', border: 'none', fontSize: '1rem', fontWeight: '600' }}>
             Sign up
           </button>
         </form>

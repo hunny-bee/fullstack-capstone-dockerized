@@ -1,4 +1,4 @@
-"use client"; // Required if using stateful components in Next.js app
+"use client"; // Required for stateful components in Next.js
 
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -11,13 +11,15 @@ const ChatBot = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
 
+  const API_KEY = process.env.NEXT_PUBLIC_HUGGING_FACE_API_KEY; // Use environment variable
+
   const toggleChat = () => setIsOpen(!isOpen);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!input.trim()) return;
 
-    // Add user's message to the chat
+    // Add the user's message to the chat
     setMessages([...messages, { text: input, user: true }]);
     setInput(''); // Clear input field
 
@@ -27,13 +29,13 @@ const ChatBot = () => {
         { inputs: input },
         {
           headers: {
-            Authorization: 'Bearer YOUR_HUGGING_FACE_API_KEY',
+            Authorization: `Bearer ${API_KEY}`,
             'Content-Type': 'application/json',
           },
         }
       );
 
-      const botReply = response.data[0].generated_text;
+      const botReply = response.data.generated_text;
       setMessages((prev) => [...prev, { text: botReply, user: false }]);
     } catch (error) {
       console.error('Error calling Hugging Face API:', error);

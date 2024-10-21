@@ -41,7 +41,7 @@ const SearchBar = () => {
           onChange={(e) => setGuests(e.target.value)}
         />
         <button
-          className="bg-pink-500 text-white p-3 rounded-full ml-2 mr-2 hover:bg-pink-600 focus:outline-none"
+          className="bg-yellow-500 text-white p-3 rounded-full ml-2 mr-2 hover:bg-yellow-600 focus:outline-none"
           type="submit"
         >
           <Search size={24} />
