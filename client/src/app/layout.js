@@ -1,6 +1,6 @@
 import './globals.css';
 import { Inter } from 'next/font/google';
-import Header from '../components/Header';
+import Header from '@/components/Header';
 import Footer from '@/components/footer/Footer';
 import ChatBot from '@/components/ChatBot';
 
