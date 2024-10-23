@@ -1,20 +1,20 @@
+'use client';
+import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMap } from '@fortawesome/free-solid-svg-icons';
+import 'leaflet/dist/leaflet.css';
 
-import NavBar from "@/components/navbar/NavBar";
-import Test from "../components/Test";
-// import HeroSection from "./components/Hero Section/HeroSection";
-import PropertyCard from "./components/PropertyCard";
-import Footer from "@/components/footer/Footer";
-import './globals.css';
-
+import PropertyListing from '@/components/PropertyListing';
+import SearchBar from '../components/SearchBar';
+import PropertyCard from '@/components/propertyCard/PropertyCard';
+import FloatingMap from './components/Floating/Floating';
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <Test />
-        {/* <HeroSection/> */}
-        <PropertyCard/>
-      </div>
-    </main>
+    <div className="container mx-auto px-4 py-8">
+      <PropertyListing />
+      <FloatingMap />
+      {/* <PropertyCard/> */}
+    </div>
   );
 }
