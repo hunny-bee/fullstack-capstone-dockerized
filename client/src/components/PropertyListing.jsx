@@ -10,10 +10,10 @@ import { Heart, List, MapPin, Star } from 'lucide-react';
 
 export default function PropertyListing() {
   const router = useRouter();
-  const [view, setView] = useState('list'); // State to toggle between 'list' and 'map' views
+  const [view, setView] = useState('list'); 
 
   const handlePropertyClick = (id) => {
-    router.push(`/property/${id}`); // Navigate to property details page on click
+    router.push(`/property/${id}`); 
   };
 
   return (
@@ -21,14 +21,14 @@ export default function PropertyListing() {
       <div className="flex flex-col items-center mb-8 py-11">
         <h1 className="text-4xl font-bold mb-4">Find your next stay</h1>
         <p className="text-gray-600 mb-6">Discover amazing properties for your perfect getaway</p>
-        <Button
-          onClick={() => setView(view === 'list' ? 'map' : 'list')} // Toggle between views
+        {/* <Button
+          onClick={() => setView(view === 'list' ? 'map' : 'list')} 
           variant="outline"
           className="shadow-md hover:bg-gray-100 transition-colors flex items-center gap-2"
         >
           Show {view === 'map' ? 'list' : 'map'}
           {view === 'map' ? <List className="h-4 w-4" /> : <MapPin className="h-4 w-4" />}
-        </Button>
+        </Button> */}
       </div>
 
       {view === 'list' ? (
