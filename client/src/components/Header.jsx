@@ -32,6 +32,14 @@ const Header = () => {
   }, []);
 
   const continents = ['Africa', 'Asia', 'Europe', 'North America', 'South America', 'Australia', 'Antarctica'];
+  
+  const languages = [
+    { name: 'English', code: 'en' },
+    { name: 'Português', code: 'pt' },
+    { name: 'Español', code: 'es' },
+    { name: 'العربية', code: 'ar' },
+    { name: '中文', code: 'zh' },
+  ];
 
   const handleNavigation = (path) => {
     router.push(path);
@@ -67,7 +75,7 @@ const Header = () => {
   const SearchBar = ({ expanded = false }) => (
     <div className={cn(
       'flex items-center space-x-4 bg-background rounded-full shadow-md p-2',
-      expanded ? 'w-full max-w-4xl' : ''
+      expanded ? 'w-full max-w-4xl mx-auto' : ''
     )}>
       <Popover>
         <PopoverTrigger asChild>
@@ -161,9 +169,11 @@ const Header = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setTheme('light')}>Light Mode</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme('dark')}>Dark Mode</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme('system')}>System</DropdownMenuItem>
+                {languages.map((lang) => (
+                  <DropdownMenuItem key={lang.code} onClick={() => console.log(`Changed to ${lang.name}`)}>
+                    {lang.name}
+                  </DropdownMenuItem>
+                ))}
               </DropdownMenuContent>
             </DropdownMenu>
             <DropdownMenu>
@@ -184,7 +194,11 @@ const Header = () => {
           </nav>
         </div>
 
-        {isScrolled && pathname === '/' && <SearchBar expanded />}
+        {isScrolled && pathname === '/' && (
+          <div className="flex justify-center mt-4">
+            <SearchBar expanded />
+          </div>
+        )}
       </div>
     </header>
   );
