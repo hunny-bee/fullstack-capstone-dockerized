@@ -1,155 +1,83 @@
-import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'next-i18next';
+'use client';
+
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { properties } from '@/data/properties';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import Image from 'next/image';
-import { Card, CardContent, CardFooter } from './ui/card';
-import { Button } from './ui/button';
-import { Heart, List, MapPin } from 'lucide-react';
+import { Heart, List, MapPin, Star } from 'lucide-react';
 
-const ViewToggle = ({ view, onToggle }) => {
-  return (
-    <Button
-      onClick={onToggle}
-      variant="outline"
-      className="shadow-md hover:bg-gray-100 transition-colors flex items-center"
-    >
-      <span className="mr-2">Show {view === 'map' ? 'list' : 'map'}</span>
-      {view === 'map' ? <List className="h-4 w-4" /> : <MapPin className="h-4 w-4" />}
-    </Button>
-  );
-};
+export default function PropertyListing() {
+  const router = useRouter();
+  const [view, setView] = useState('list'); // State to toggle between 'list' and 'map' views
 
-export default function PropertyListing({ router }) {
-  const { t } = useTranslation('common');
-  const [properties, setProperties] = useState([]);
-  const [view, setView] = useState('list');
-
-  useEffect(() => {
-    fetchProperties();
-  }, []);
-
-  const handlePropertyClick = (property) => {
-    router.push(`/property/${property.id}`);
-  };
-
-  const fetchProperties = async () => {
-    // Dummy data (same as before)
-    const dummyProperties = [
-      {
-        id: 1,
-        title: 'Cozy Beachfront Cottage',
-        description: 'Relax in this charming cottage with stunning ocean views.',
-        price: 150,
-        image: 'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2',
-      },
-      {
-        id: 2,
-        title: 'Modern City Apartment',
-        description: 'Stylish apartment in the heart of the city.',
-        price: 120,
-        image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688',
-      },
-      {
-        id: 3,
-        title: 'Mountain Retreat Cabin',
-        description: 'Escape to nature in this secluded mountain cabin.',
-        price: 180,
-        image: 'https://images.unsplash.com/photo-1518780664697-55e3ad937233',
-      },{
-        id: 4,
-        title: 'Luxury Penthouse Suite',
-        description: 'Experience ultimate luxury in this top-floor penthouse.',
-        price: 300,
-        image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-      },
-      {
-        id: 5,
-        title: 'Rustic Farmhouse Getaway',
-        description: 'Enjoy the countryside in this charming renovated farmhouse.',
-        price: 140,
-        image: 'https://images.unsplash.com/photo-1505916349660-8d91a99c3e23?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-      },
-      {
-        id: 6,
-        title: 'Seaside Villa',
-        description: 'Luxurious villa with private beach access and panoramic views.',
-        price: 250,
-        image: 'https://images.unsplash.com/photo-1613553507747-5f8d62ad5904?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-      },
-      {
-        id: 7,
-        title: 'Urban Loft',
-        description: 'Trendy loft in a converted warehouse with artistic vibes.',
-        price: 130,
-        image: 'https://images.unsplash.com/photo-1536376072261-38c75010e6c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2071&q=80',
-      },
-      {
-        id: 8,
-        title: 'Treehouse Adventure',
-        description: 'Unique treehouse experience surrounded by nature.',
-        price: 160,
-        image: 'https://images.unsplash.com/photo-1488462237308-ecaa28b729d7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-      },
-      {
-        id: 9,
-        title: 'Historic Downtown Apartment',
-        description: 'Charming apartment in a restored historic building.',
-        price: 110,
-        image: 'https://images.unsplash.com/photo-1529408686214-b48b8532f72c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-      },
-      // ... (rest of the properties)
-    ];
-    setProperties(dummyProperties);
-  };
-
-  const toggleView = () => {
-    setView(view === 'list' ? 'map' : 'list');
+  const handlePropertyClick = (id) => {
+    router.push(`/property/${id}`); // Navigate to property details page on click
   };
 
   return (
     <div className="container mx-auto px-4">
       <div className="flex flex-col items-center mb-8 py-11">
-        <h2 className="text-2xl font-bold mb-4">{t('properties')}</h2>
-        <ViewToggle view={view} onToggle={toggleView} />
+        <h1 className="text-4xl font-bold mb-4">Find your next stay</h1>
+        <p className="text-gray-600 mb-6">Discover amazing properties for your perfect getaway</p>
+        <Button
+          onClick={() => setView(view === 'list' ? 'map' : 'list')} // Toggle between views
+          variant="outline"
+          className="shadow-md hover:bg-gray-100 transition-colors flex items-center gap-2"
+        >
+          Show {view === 'map' ? 'list' : 'map'}
+          {view === 'map' ? <List className="h-4 w-4" /> : <MapPin className="h-4 w-4" />}
+        </Button>
       </div>
-      
+
       {view === 'list' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {properties.map((property) => (
-            <Card key={property.id} className="overflow-hidden cursor-pointer transition-shadow hover:shadow-lg"
-            onClick={() => handlePropertyClick(property)}>
+            <Card
+              key={property.id}
+              className="overflow-hidden cursor-pointer transition-all hover:shadow-lg hover:scale-[1.02]"
+              onClick={() => handlePropertyClick(property.id)}
+            >
               <CardContent className="p-0 relative">
                 <div className="relative w-full h-64">
                   <Image
-                    src={property.image}
+                    src={property.images[0]}
                     alt={property.title}
-                    layout="fill"
-                    objectFit="cover"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="absolute top-2 right-2 text-white hover:bg-white/20"
+                  >
+                    <Heart className="h-5 w-5" />
+                  </Button>
                 </div>
-                <Button variant="ghost" className="absolute top-2 right-2 text-white hover:text-white">
-                  <Heart className="h-6 w-6" />
-                </Button>
               </CardContent>
-              <CardFooter className="flex flex-col items-start p-4">
-                <div className="flex justify-between w-full">
-                  <h3 className="text-lg font-semibold">{property.title}</h3>
-                  <div className="flex items-center">
-                    <span className="text-sm mr-1">★</span>
-                    <span className="text-sm">4.95</span>
-                  </div>
+              <CardFooter className="p-4 flex flex-col items-start">
+                <div className="flex items-center gap-1 mb-2">
+                  <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                  <span className="font-semibold">{property.rating}</span>
+                  <span className="text-gray-600">({property.reviews} reviews)</span>
                 </div>
-                <p className="text-sm text-gray-600 mt-1">{property.description}</p>
-                <p className="text-sm text-gray-600 mt-1">Nov 4 - 9</p>
-                <p className="text-sm font-semibold mt-2">
-                  ${property.price} <span className="font-normal">{t('night')}</span>
+                <h3 className="text-lg font-semibold mb-1">{property.title}</h3>
+                <p className="text-sm text-gray-600 mb-2">{property.location}</p>
+                <p className="text-sm font-semibold">
+                  <span className="text-lg">{property.currency}{property.price}</span> / night
                 </p>
               </CardFooter>
             </Card>
           ))}
         </div>
       ) : (
-        <div className="bg-gray-200 h-[600px] flex items-center justify-center">
-          <p className="text-xl font-semibold">Map View (Not implemented)</p>
+        <div className="bg-gray-100 h-[600px] rounded-lg flex items-center justify-center">
+          <div className="text-center">
+            <MapPin className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+            <p className="text-xl font-semibold text-gray-600">Map View Coming Soon</p>
+          </div>
         </div>
       )}
     </div>
