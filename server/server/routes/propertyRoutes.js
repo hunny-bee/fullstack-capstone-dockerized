@@ -4,7 +4,7 @@ const propertyController = require('../controllers/propertyController');
 const { authenticateUser, hostOnly } = require('../middleware/authMiddleware');
 
 
-router.post('/', authenticateUser, hostOnly, propertyController.createProperty); 
+router.post('/', ...propertyController.createProperty); 
 router.get('/', propertyController.getAllProperties);
 router.get('/:id', propertyController.getPropertyById);
 router.put('/:id', authenticateUser, hostOnly, propertyController.updateProperty);

@@ -1,30 +1,34 @@
-const Property = require('../models/property');
+const Property = require('../models/PropertySchema');
+const upload = require('../middleware/uploadMiddleware');
 
-exports.createProperty = async (req, res) => {
-  try {
-    const { title, description, address, city, country, pricePerNight, availableDates, images, amenities, activities } = req.body;
+exports.createProperty = [
+  upload.array('images', 5), // Allow up to 5 images
+  async (req, res) => {
+    try {
+      const { title, description, address, city, country, pricePerNight, availableDates, amenities, activities } = req.body;
+      const images = req.files.map(file => file.path);
 
-    const property = new Property({
-      title,
-      description,
-      address,
-      city,
-      country,
-      pricePerNight,
-      availableDates,
-      images,
-      amenities,
-      activities,
-      host: req.user.userId
-    });
+      const property = new Property({
+        title,
+        description,
+        address,
+        city,
+        country,
+        pricePerNight: Number(pricePerNight),
+        images,
+        host: req.user.userId,
+        availableDates: availableDates ? JSON.parse(availableDates) : [],
+        amenities: amenities ? JSON.parse(amenities) : [],
+        activities: activities ? JSON.parse(activities) : []
+      });
 
-    await property.save();
-    res.status(201).json({ message: 'Property created successfully' });
-  } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+      await property.save();
+      res.status(201).json({ message: 'Property created successfully' });
+    } catch (error) {
+      res.status(500).json({ message: 'Server error', error });
+    }
   }
-};
-
+];
 
 exports.getPropertyById = async (req, res) => {
   try {
@@ -71,6 +75,15 @@ exports.deleteProperty = async (req, res) => {
   try {
     await Property.findByIdAndDelete(req.params.id);
     res.json({ message: 'Property deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
+};
+
+exports.getPropertiesByHost = async (req, res) => {
+  try {
+    const properties = await Property.find({ host: req.params.hostId });
+    res.json(properties);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error });
   }

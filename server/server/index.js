@@ -6,7 +6,7 @@ require("dotenv").config();
 
 // Import route files
 const userRoutes = require("./routes/userRoutes");
-// const propertyRoutes = require("./routes/propertyRoutes");
+const propertyRoutes = require("./routes/propertyRoutes");
 // const bookingRoutes = require("./routes/bookingRoutes");
 // const reviewRoutes = require("./routes/reviewRoutes");
 // const amenityRoutes = require("./routes/amenityRoutes");
@@ -22,7 +22,7 @@ app.use(express.json());
 
 // Use routes
 app.use("/api/users", userRoutes);
-// app.use("/api/properties", propertyRoutes);
+app.use("/api/properties", propertyRoutes);
 // app.use("/api/bookings", bookingRoutes);
 // app.use("/api/reviews", reviewRoutes);
 // app.use("/api/amenities", amenityRoutes);

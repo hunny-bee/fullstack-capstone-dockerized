@@ -29,7 +29,6 @@ const PropertySchema = new Schema({
     host: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
     },
     activities: [{
       type: Schema.Types.ObjectId,
@@ -37,7 +36,6 @@ const PropertySchema = new Schema({
     }],
     availableDates: [{
       type: Date,
-      required: true,
     }],
     images: [{
       type: String,
