@@ -15,6 +15,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useTranslation } from '@/lib/i18n/useTranslation';
+
 
 const Header = () => {
   const router = useRouter();
@@ -24,6 +26,7 @@ const Header = () => {
   const [checkInDate, setCheckInDate] = useState();
   const [checkOutDate, setCheckOutDate] = useState();
   const [guests, setGuests] = useState({ adults: 0, children: 0, infants: 0, pets: 0 });
+  const { t, changeLanguage, locale } = useTranslation();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 0);
