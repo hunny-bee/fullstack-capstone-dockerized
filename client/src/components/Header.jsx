@@ -1,10 +1,10 @@
-"use client"
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
+import { useRouter, usePathname } from 'next/navigation';
 import { Search, Globe, Menu, User, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
@@ -15,25 +15,27 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import Link from 'next/link';
 
 const Header = () => {
+  const router = useRouter();
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const { theme, setTheme } = useTheme();
-  const [checkInDate, setCheckInDate] = useState(undefined);
-  const [checkOutDate, setCheckOutDate] = useState(undefined);
+  const [checkInDate, setCheckInDate] = useState();
+  const [checkOutDate, setCheckOutDate] = useState();
   const [guests, setGuests] = useState({ adults: 0, children: 0, infants: 0, pets: 0 });
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0);
-    };
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 0);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const continents = ['Africa', 'Asia', 'Europe', 'North America', 'South America', 'Australia', 'Antarctica'];
+
+  const handleNavigation = (path) => {
+    router.push(path);
+  };
 
   const GuestSelector = () => (
     <div className="space-y-4">
@@ -44,7 +46,7 @@ const Header = () => {
             <Button
               size="sm"
               variant="outline"
-              onClick={() => setGuests(prev => ({ ...prev, [type]: Math.max(0, prev[type] - 1) }))}
+              onClick={() => setGuests((prev) => ({ ...prev, [type]: Math.max(0, prev[type] - 1) }))}
             >
               -
             </Button>
@@ -52,7 +54,7 @@ const Header = () => {
             <Button
               size="sm"
               variant="outline"
-              onClick={() => setGuests(prev => ({ ...prev, [type]: prev[type] + 1 }))}
+              onClick={() => setGuests((prev) => ({ ...prev, [type]: prev[type] + 1 }))}
             >
               +
             </Button>
@@ -64,8 +66,8 @@ const Header = () => {
 
   const SearchBar = ({ expanded = false }) => (
     <div className={cn(
-      "flex items-center space-x-4 bg-background rounded-full shadow-md p-2",
-      expanded ? "w-full max-w-4xl" : ""
+      'flex items-center space-x-4 bg-background rounded-full shadow-md p-2',
+      expanded ? 'w-full max-w-4xl' : ''
     )}>
       <Popover>
         <PopoverTrigger asChild>
@@ -89,39 +91,29 @@ const Header = () => {
           </Select>
         </PopoverContent>
       </Popover>
-      <div className="h-6 w-px bg-border"></div>
+      <div className="h-6 w-px bg-border" />
       <Popover>
         <PopoverTrigger asChild>
           <Button variant="ghost">
-            {checkInDate ? checkInDate.toLocaleDateString() : "Check in"}
+            {checkInDate ? checkInDate.toLocaleDateString() : 'Check in'}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0">
-          <Calendar
-            mode="single"
-            selected={checkInDate}
-            onSelect={setCheckInDate}
-            initialFocus
-          />
+          <Calendar mode="single" selected={checkInDate} onSelect={setCheckInDate} initialFocus />
         </PopoverContent>
       </Popover>
-      <div className="h-6 w-px bg-border"></div>
+      <div className="h-6 w-px bg-border" />
       <Popover>
         <PopoverTrigger asChild>
           <Button variant="ghost">
-            {checkOutDate ? checkOutDate.toLocaleDateString() : "Check out"}
+            {checkOutDate ? checkOutDate.toLocaleDateString() : 'Check out'}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0">
-          <Calendar
-            mode="single"
-            selected={checkOutDate}
-            onSelect={setCheckOutDate}
-            initialFocus
-          />
+          <Calendar mode="single" selected={checkOutDate} onSelect={setCheckOutDate} initialFocus />
         </PopoverContent>
       </Popover>
-      <div className="h-6 w-px bg-border"></div>
+      <div className="h-6 w-px bg-border" />
       <Popover>
         <PopoverTrigger asChild>
           <Button variant="ghost" className="w-full justify-start">
@@ -149,24 +141,17 @@ const Header = () => {
           'flex items-center transition-all duration-300',
           isScrolled ? 'flex-col space-y-4 md:flex-row md:space-y-0 md:justify-between' : 'justify-between'
         )}>
-          {/* Logo */}
-          <div className="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-primary">
+          <div className="flex items-center cursor-pointer" onClick={() => handleNavigation('/')}>
+            <svg className="w-8 h-8 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205l3 1m1.5.5l-1.5-.5M6.75 7.364V3h-3v18m3-13.636l10.5-3.819" />
             </svg>
             <span className="ml-2 text-xl font-bold text-primary">StayCation</span>
           </div>
 
-          {/* Search bar */}
-          {!isScrolled && (
-            <div className="mt-4 md:mt-0">
-              <SearchBar />
-            </div>
-          )}
+          {!isScrolled && pathname === '/' && <SearchBar />}
 
-          {/* Navigation */}
           <nav className="flex items-center space-x-4">
-            <Button variant="ghost" className="hidden md:inline-flex">
+            <Button variant="ghost" onClick={() => handleNavigation('/host')}>
               StayCation your home
             </Button>
             <DropdownMenu>
@@ -176,15 +161,9 @@ const Header = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setTheme('light')}>
-                  Light Mode
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme('dark')}>
-                  Dark Mode
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme('system')}>
-                  System
-                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTheme('light')}>Light Mode</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTheme('dark')}>Dark Mode</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTheme('system')}>System</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
             <DropdownMenu>
@@ -195,32 +174,17 @@ const Header = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem>
-                  <Link href="/signup">Sign up</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href="/login">Log in</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href="/host">StayCation your home</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href="/host-experience">Host an experience</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href="/help">Help Center</Link>
-                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleNavigation('/signup')}>Sign up</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleNavigation('/login')}>Log in</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleNavigation('/host')}>StayCation your home</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleNavigation('/host-experience')}>Host an experience</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleNavigation('/help')}>Help Center</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </nav>
         </div>
 
-        {/* Expanded search bar for scrolled state */}
-        {isScrolled && (
-          <div className="flex items-center justify-center mt-4">
-            <SearchBar expanded />
-          </div>
-        )}
+        {isScrolled && pathname === '/' && <SearchBar expanded />}
       </div>
     </header>
   );
