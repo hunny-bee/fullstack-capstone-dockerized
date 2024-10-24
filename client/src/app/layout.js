@@ -5,6 +5,7 @@ import Footer from '@/components/footer/Footer';
 import ChatBot from '@/components/ChatBot';
 import { LanguageProvider } from '@/lib/i18n/LanguageProvider';
 
+
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {

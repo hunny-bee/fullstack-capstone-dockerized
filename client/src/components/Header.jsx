@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
@@ -190,8 +190,7 @@ const Header = () => {
                 <DropdownMenuItem onClick={() => handleNavigation('/signup')}>Sign up</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => handleNavigation('/login')}>Log in</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => handleNavigation('/host')}>StayCation your home</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleNavigation('/host-experience')}>Host an experience</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleNavigation('/help')}>Help Center</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleNavigation('/dashboard')}>Dashboard</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </nav>
