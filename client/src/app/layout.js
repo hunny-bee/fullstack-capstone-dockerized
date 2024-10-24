@@ -2,7 +2,7 @@ import './globals.css';
 import { Inter } from 'next/font/google';
 import Header from '@/components/Header';
 import Footer from '@/components/footer/Footer';
-import ChatBot from '@/components/ChatBot';
+// import ChatBot from '@/components/ChatBot';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
           <Header />
           <main className="min-h-screen">{children}</main>
           <Footer />
-          <ChatBot/>
+          {/* <ChatBot/> */}
         </body>
     </html>
   );

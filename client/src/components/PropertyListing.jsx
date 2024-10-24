@@ -18,17 +18,9 @@ export default function PropertyListing() {
 
   return (
     <div className="container mx-auto px-4">
-      <div className="flex flex-col items-center mb-8 py-11">
-        <h1 className="text-4xl font-bold mb-4">Find your next stay</h1>
-        <p className="text-gray-600 mb-6">Discover amazing properties for your perfect getaway</p>
-        {/* <Button
-          onClick={() => setView(view === 'list' ? 'map' : 'list')} 
-          variant="outline"
-          className="shadow-md hover:bg-gray-100 transition-colors flex items-center gap-2"
-        >
-          Show {view === 'map' ? 'list' : 'map'}
-          {view === 'map' ? <List className="h-4 w-4" /> : <MapPin className="h-4 w-4" />}
-        </Button> */}
+      <div className="flex flex-col items-center mb-8 py-11 text-center">
+        {/* <h1 className="text-4xl font-bold mb-4">Find your next stay</h1>
+        <p className="text-gray-600 mb-6">Discover amazing properties for your perfect getaway</p> */}
       </div>
 
       {view === 'list' ? (
