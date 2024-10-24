@@ -25,8 +25,8 @@ export default function ImageGallery({ images, title }) {
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="relative aspect-[4/3] overflow-hidden rounded-lg md:col-span-2">
+      <div className="flex flex-col md:flex-row md:space-x-4 mb-4">
+        <div className="relative w-full h-[400px] md:h-[500px] aspect-[16/9] overflow-hidden rounded-lg">
           <Image
             src={images[0]}
             alt={`${title} - Main`}
@@ -36,24 +36,26 @@ export default function ImageGallery({ images, title }) {
             priority // Load this image first
           />
         </div>
-        {images.slice(1, 5).map((image, index) => (
-          <div key={index} className="relative aspect-[4/3] overflow-hidden rounded-lg hidden md:block">
-            <Image
-              src={image}
-              alt={`${title} - ${index + 2}`}
-              fill
-              className="object-cover cursor-pointer"
-              onClick={() => {
-                setCurrentImage(index + 1);
-                setShowAll(true);
-              }}
-              priority // Load these images as well
-            />
-          </div>
-        ))}
+        <div className="grid grid-cols-2 gap-4 mt-4 md:mt-0">
+          {images.slice(1, 5).map((image, index) => (
+            <div key={index} className="relative h-[200px] aspect-[16/9] overflow-hidden rounded-lg cursor-pointer">
+              <Image
+                src={image}
+                alt={`${title} - ${index + 2}`}
+                fill
+                className="object-cover"
+                onClick={() => {
+                  setCurrentImage(index + 1);
+                  setShowAll(true);
+                }}
+                priority // Load these images as well
+              />
+            </div>
+          ))}
+        </div>
         <Button
           variant="secondary"
-          className="absolute bottom-4 right-4"
+          className="mt-4 md:mt-0 md:self-center"
           onClick={() => setShowAll(true)}
           aria-label="Show all photos"
         >
