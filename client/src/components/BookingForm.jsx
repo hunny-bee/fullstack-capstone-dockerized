@@ -11,7 +11,7 @@ export default function BookingForm({ propertyId, price }) {
   const handleBooking = async () => {
     const booking = {
       propertyId,
-      userId: 'user123', // Replace with actual user ID
+      userId: 'user123', 
       checkIn,
       checkOut,
       guests,
