@@ -1,21 +1,63 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { addDays, format } from 'date-fns';
+import { addDays, format, differenceInDays } from 'date-fns';
+import { useToast } from '@/hooks/use-toast';
 
-const BookingCard = ({ price, currency, maxGuests }) => {
+const BookingCard = ({ price, currency, maxGuests, propertyId, propertyTitle, propertyImage }) => {
+  const router = useRouter();
+  const { toast } = useToast();
   const [guests, setGuests] = useState(1);
   const [dateRange, setDateRange] = useState({
     from: new Date(),
     to: addDays(new Date(), 5),
   });
 
+  const calculateNights = () => {
+    if (!dateRange.from || !dateRange.to) return 0;
+    return Math.max(1, differenceInDays(dateRange.to, dateRange.from));
+  };
+
+  const calculateBasePrice = () => {
+    return price * calculateNights();
+  };
+
+  const calculateGuestFee = () => {
+    const baseGuestFee = guests > 2 ? (guests - 2) * 25 : 0;
+    return baseGuestFee * calculateNights();
+  };
+
+  const calculateServiceFee = () => {
+    return Math.round(calculateBasePrice() * 0.12);
+  };
+
+  const calculateTotal = () => {
+    return calculateBasePrice() + calculateGuestFee() + calculateServiceFee();
+  };
+
   const handleBooking = () => {
-    console.log('Booking:', { dateRange, guests });
+    const bookingDetails = {
+      propertyId,
+      propertyTitle,
+      propertyImage,
+      dateRange,
+      guests,
+      pricing: {
+        basePrice: price,
+        guestFee: calculateGuestFee(),
+        serviceFee: calculateServiceFee(),
+        total: calculateTotal(),
+      },
+      currency,
+    };
+
+    localStorage.setItem('pendingBooking', JSON.stringify(bookingDetails));
+    router.push('/booking/confirm');
   };
 
   return (
@@ -72,7 +114,7 @@ const BookingCard = ({ price, currency, maxGuests }) => {
         </div>
 
         <Button className="w-full" onClick={handleBooking}>
-          Book now
+          Reserve
         </Button>
 
         <div className="text-center text-sm text-gray-500">
@@ -80,23 +122,26 @@ const BookingCard = ({ price, currency, maxGuests }) => {
         </div>
 
         {dateRange.from && dateRange.to && (
-          <div className="border-t pt-4 mt-4">
-            <div className="flex justify-between mb-2">
+          <div className="border-t pt-4 mt-4 space-y-2">
+            <div className="flex justify-between">
               <span>
-                {currency}{price} x{' '}
-                {Math.ceil((dateRange.to - dateRange.from) / (1000 * 60 * 60 * 24))} nights
+                {currency}{price} x {calculateNights()} nights
               </span>
-              <span>
-                {currency}
-                {price * Math.ceil((dateRange.to - dateRange.from) / (1000 * 60 * 60 * 24))}
-              </span>
+              <span>{currency}{calculateBasePrice()}</span>
+            </div>
+            {calculateGuestFee() > 0 && (
+              <div className="flex justify-between">
+                <span>Guest fee</span>
+                <span>{currency}{calculateGuestFee()}</span>
+              </div>
+            )}
+            <div className="flex justify-between">
+              <span>Service fee</span>
+              <span>{currency}{calculateServiceFee()}</span>
             </div>
             <div className="flex justify-between font-bold pt-2 border-t">
               <span>Total</span>
-              <span>
-                {currency}
-                {price * Math.ceil((dateRange.to - dateRange.from) / (1000 * 60 * 60 * 24))}
-              </span>
+              <span>{currency}{calculateTotal()}</span>
             </div>
           </div>
         )}

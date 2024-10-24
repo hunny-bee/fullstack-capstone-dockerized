@@ -10,19 +10,14 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/command";
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useTranslation } from '@/lib/i18n/useTranslation';
+import { useContext } from 'react';
+import { SearchContext } from '@/app/layout';
 
 const Header = ({ onSearch }) => {
   const router = useRouter();
@@ -30,17 +25,26 @@ const Header = ({ onSearch }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const { theme, setTheme } = useTheme();
   const [location, setLocation] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [checkInDate, setCheckInDate] = useState(null);
   const [checkOutDate, setCheckOutDate] = useState(null);
   const [guests, setGuests] = useState({ adults: 0, children: 0, infants: 0, pets: 0 });
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { t, changeLanguage, locale } = useTranslation();
+  const { setSearchParams } = useContext(SearchContext);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 0);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleLogoClick = () => {
+    setSearchParams({ location: '', guests: null });
+    setLocation('');
+    setGuests({ adults: 0, children: 0, infants: 0, pets: 0 });
+    router.push('/');
+  };
 
   const locations = [
     'Malibu, California',
@@ -55,6 +59,10 @@ const Header = ({ onSearch }) => {
     'Seattle, Washington'
   ];
 
+  const filteredLocations = locations.filter(loc =>
+    loc.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const languages = [
     { name: 'English', code: 'en' },
     { name: 'Português', code: 'pt' },
@@ -64,13 +72,17 @@ const Header = ({ onSearch }) => {
   ];
 
   const handleSearch = () => {
-    onSearch({
+    onSearch?.({
       location,
-      checkIn: checkInDate,
-      checkOut: checkOutDate,
       guests
     });
     setIsSearchOpen(false);
+  };
+
+  const handleLocationSelect = (loc) => {
+    setLocation(loc);
+    setSearchTerm('');
+    handleSearch();
   };
 
   const GuestSelector = () => (
@@ -87,7 +99,11 @@ const Header = ({ onSearch }) => {
             <Button
               size="sm"
               variant="outline"
-              onClick={() => setGuests((prev) => ({ ...prev, [type]: Math.max(0, prev[type] - 1) }))}
+              onClick={() => {
+                const newGuests = { ...guests, [type]: Math.max(0, guests[type] - 1) };
+                setGuests(newGuests);
+                handleSearch();
+              }}
               disabled={count === 0}
             >
               -
@@ -96,7 +112,11 @@ const Header = ({ onSearch }) => {
             <Button
               size="sm"
               variant="outline"
-              onClick={() => setGuests((prev) => ({ ...prev, [type]: prev[type] + 1 }))}
+              onClick={() => {
+                const newGuests = { ...guests, [type]: guests[type] + 1 };
+                setGuests(newGuests);
+                handleSearch();
+              }}
             >
               +
             </Button>
@@ -108,34 +128,41 @@ const Header = ({ onSearch }) => {
 
   const SearchBar = ({ expanded = false }) => (
     <div className={cn(
-      'flex items-center space-x-4 bg-white rounded-full border shadow-sm p-2',
+      'flex items-center space-x-4 bg-background rounded-full border shadow-sm p-2',
       expanded ? 'w-full max-w-4xl mx-auto' : ''
     )}>
       <Popover open={isSearchOpen} onOpenChange={setIsSearchOpen}>
         <PopoverTrigger asChild>
-          <Button variant="ghost" className="w-[200px] justify-start font-normal">
-            <span className="mr-2">{t('where')}</span>
+          <Button variant="ghost" className="w-[150px] justify-start font-normal">
+            <span className="mr-2">{location || t('where')}</span>
             <ChevronDown className="h-4 w-4 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[300px] p-0" align="start">
-          <Command>
-            <CommandInput placeholder={t('searchLocations')} />
-            <CommandEmpty>{t('noLocationFound')}</CommandEmpty>
-            <CommandGroup>
-              {locations.map((loc) => (
-                <CommandItem
-                  key={loc}
-                  onSelect={() => {
-                    setLocation(loc);
-                    handleSearch();
-                  }}
-                >
-                  {loc}
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </Command>
+        <PopoverContent className="w-[300px] p-4" align="start">
+          <div className="space-y-4">
+            <Input
+              placeholder={t('searchLocations')}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full"
+            />
+            <div className="max-h-[300px] overflow-y-auto space-y-2">
+              {filteredLocations.length === 0 ? (
+                <p className="text-sm text-muted-foreground p-2">{t('noLocationFound')}</p>
+              ) : (
+                filteredLocations.map((loc) => (
+                  <Button
+                    key={loc}
+                    variant="ghost"
+                    className="w-full justify-start"
+                    onClick={() => handleLocationSelect(loc)}
+                  >
+                    {loc}
+                  </Button>
+                ))
+              )}
+            </div>
+          </div>
         </PopoverContent>
       </Popover>
 
@@ -151,10 +178,7 @@ const Header = ({ onSearch }) => {
           <Calendar
             mode="single"
             selected={checkInDate}
-            onSelect={(date) => {
-              setCheckInDate(date);
-              handleSearch();
-            }}
+            onSelect={setCheckInDate}
             initialFocus
           />
         </PopoverContent>
@@ -172,10 +196,7 @@ const Header = ({ onSearch }) => {
           <Calendar
             mode="single"
             selected={checkOutDate}
-            onSelect={(date) => {
-              setCheckOutDate(date);
-              handleSearch();
-            }}
+            onSelect={setCheckOutDate}
             initialFocus
           />
         </PopoverContent>
@@ -185,7 +206,7 @@ const Header = ({ onSearch }) => {
 
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="ghost" className="w-[200px] justify-start font-normal">
+          <Button variant="ghost" className="w-[150px] justify-start font-normal">
             <span className="mr-2">
               {Object.values(guests).reduce((a, b) => a + b, 0) > 0
                 ? `${Object.values(guests).reduce((a, b) => a + b, 0)} ${t('guests')}`
@@ -212,21 +233,28 @@ const Header = ({ onSearch }) => {
   return (
     <header className={cn(
       'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-      isScrolled ? 'bg-background shadow-md py-4' : 'bg-background py-6'
+      isScrolled ? 'bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-md py-4' : 'bg-background py-6'
     )}>
       <div className="container mx-auto px-4">
         <div className={cn(
           'flex items-center transition-all duration-300',
           isScrolled ? 'flex-col space-y-4 md:flex-row md:space-y-0 md:justify-between' : 'justify-between'
         )}>
-          <div className="flex items-center cursor-pointer" onClick={() => router.push('/')}>
+          <div className="flex items-center cursor-pointer" onClick={handleLogoClick}>
             <svg className="w-8 h-8 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205l3 1m1.5.5l-1.5-.5M6.75 7.364V3h-3v18m3-13.636l10.5-3.819" />
             </svg>
             <span className="ml-2 text-xl font-bold text-primary">StayCation</span>
           </div>
 
-          {!isScrolled && pathname === '/' && <SearchBar />}
+          {pathname === '/' && (
+            <div className={cn(
+              'transition-all duration-300',
+              isScrolled ? 'w-full md:w-auto' : ''
+            )}>
+              <SearchBar expanded={isScrolled} />
+            </div>
+          )}
 
           <nav className="flex items-center space-x-4">
             <Button variant="ghost" onClick={() => router.push('/host')}>
@@ -263,12 +291,6 @@ const Header = ({ onSearch }) => {
             </DropdownMenu>
           </nav>
         </div>
-
-        {isScrolled && pathname === '/' && (
-          <div className="flex justify-center mt-4">
-            <SearchBar expanded />
-          </div>
-        )}
       </div>
     </header>
   );

@@ -1,58 +1,36 @@
 'use client';
 
-import { useState } from 'react';
-import { properties } from '@/data/properties';
+import { useContext, useEffect, useState } from 'react';
+import { properties as allProperties } from '@/data/properties';
 import PropertyListing from '@/components/PropertyListing';
 import FloatingMap from './components/Floating/Floating';
-import { LanguageProvider } from '@/lib/i18n/LanguageProvider';
+import { SearchContext } from './layout';
 
 export default function Home() {
-  const [filteredProperties, setFilteredProperties] = useState(properties);
-  const [searchParams, setSearchParams] = useState({
-    location: '',
-    checkIn: null,
-    checkOut: null,
-    guests: {
-      adults: 0,
-      children: 0,
-      infants: 0,
-      pets: 0
-    }
-  });
+  const [filteredProperties, setFilteredProperties] = useState(allProperties);
+  const { searchParams } = useContext(SearchContext);
 
-  const handleSearch = (params) => {
-    setSearchParams(params);
-    
-    let filtered = properties;
+  useEffect(() => {
+    let filtered = allProperties;
 
-    // Filter by location
-    if (params.location) {
-      filtered = filtered.filter(property => 
-        property.location.toLowerCase().includes(params.location.toLowerCase())
+    if (searchParams.location) {
+      filtered = filtered.filter(property =>
+        property.location.toLowerCase().includes(searchParams.location.toLowerCase())
       );
     }
 
-    // Filter by dates (availability)
-    if (params.checkIn && params.checkOut) {
-      // In a real app, you'd check against booking dates
-      filtered = filtered;
-    }
-
-    // Filter by total guests
-    const totalGuests = Object.values(params.guests).reduce((a, b) => a + b, 0);
-    if (totalGuests > 0) {
+    if (searchParams.guests && Object.values(searchParams.guests).some(count => count > 0)) {
+      const totalGuests = Object.values(searchParams.guests).reduce((sum, count) => sum + count, 0);
       filtered = filtered.filter(property => property.guests >= totalGuests);
     }
 
     setFilteredProperties(filtered);
-  };
+  }, [searchParams]);
 
   return (
-    <LanguageProvider>
-      <div className="container mx-auto px-4 py-8">
-        <PropertyListing properties={filteredProperties} />
-        <FloatingMap />
-      </div>
-    </LanguageProvider>
+    <div className="container mx-auto px-4 py-8">
+      <PropertyListing properties={filteredProperties} />
+      <FloatingMap />
+    </div>
   );
 }
