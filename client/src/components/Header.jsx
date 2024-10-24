@@ -38,7 +38,7 @@ const Header = () => {
     'Johannesburg', 
     'Durban', 
     'Pretoria', 
-    'Port Elizabeth', 
+    'Gqeberha', 
     'Bloemfontein', 
     'East London'
   ];
