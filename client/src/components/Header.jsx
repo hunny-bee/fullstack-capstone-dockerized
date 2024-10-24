@@ -17,7 +17,6 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 
-
 const Header = () => {
   const router = useRouter();
   const pathname = usePathname();
@@ -34,8 +33,16 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const continents = ['Africa', 'Asia', 'Europe', 'North America', 'South America', 'Australia', 'Antarctica'];
-  
+  const cities = [
+    'Cape Town', 
+    'Johannesburg', 
+    'Durban', 
+    'Pretoria', 
+    'Port Elizabeth', 
+    'Bloemfontein', 
+    'East London'
+  ];
+
   const languages = [
     { name: 'English', code: 'en' },
     { name: 'Português', code: 'pt' },
@@ -57,16 +64,14 @@ const Header = () => {
             <Button
               size="sm"
               variant="outline"
-              onClick={() => setGuests((prev) => ({ ...prev, [type]: Math.max(0, prev[type] - 1) }))}
-            >
+              onClick={() => setGuests((prev) => ({ ...prev, [type]: Math.max(0, prev[type] - 1) }))}>
               -
             </Button>
             <span>{guests[type]}</span>
             <Button
               size="sm"
               variant="outline"
-              onClick={() => setGuests((prev) => ({ ...prev, [type]: prev[type] + 1 }))}
-            >
+              onClick={() => setGuests((prev) => ({ ...prev, [type]: prev[type] + 1 }))}>
               +
             </Button>
           </div>
@@ -75,11 +80,8 @@ const Header = () => {
     </div>
   );
 
-  const SearchBar = ({ expanded = false }) => (
-    <div className={cn(
-      'flex items-center space-x-4 bg-background rounded-full shadow-md p-2',
-      expanded ? 'w-full max-w-4xl mx-auto' : ''
-    )}>
+  const SearchBar = () => (
+    <div className="flex items-center space-x-4 bg-background rounded-full shadow-md p-2 max-w-4xl mx-auto">
       <Popover>
         <PopoverTrigger asChild>
           <Button variant="ghost" className="w-full justify-start">
@@ -90,12 +92,12 @@ const Header = () => {
         <PopoverContent className="w-[200px] p-0">
           <Select>
             <SelectTrigger>
-              <SelectValue placeholder="Select a continent" />
+              <SelectValue placeholder="Select a city" />
             </SelectTrigger>
             <SelectContent>
-              {continents.map((continent) => (
-                <SelectItem key={continent} value={continent.toLowerCase()}>
-                  {continent}
+              {cities.map((city) => (
+                <SelectItem key={city} value={city.toLowerCase()}>
+                  {city}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -136,9 +138,8 @@ const Header = () => {
           <GuestSelector />
         </PopoverContent>
       </Popover>
-      <Button    size="icon" 
-        className="rounded-full bg-primary text-primary-foreground p-2 hover:bg-primary/80 transition duration-300 ease-in-out">
-       <Search className="h-6 w-6" />
+      <Button size="icon" className="rounded-full bg-primary text-primary-foreground p-2 hover:bg-primary/80 transition duration-300 ease-in-out">
+        <Search className="h-6 w-6" />
       </Button>
     </div>
   );
@@ -160,7 +161,7 @@ const Header = () => {
             <span className="ml-2 text-xl font-bold text-primary">StayCation</span>
           </div>
 
-          {!isScrolled && pathname === '/' && <SearchBar />}
+          <SearchBar />
 
           <nav className="flex items-center space-x-4">
             <Button variant="ghost" onClick={() => handleNavigation('/host')}>
@@ -190,18 +191,11 @@ const Header = () => {
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => handleNavigation('/signup')}>Sign up</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => handleNavigation('/login')}>Log in</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleNavigation('/host')}>StayCation your home</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleNavigation('/dashboard')}>Dashboard</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => console.log('Logged out')}>Log out</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </nav>
         </div>
-
-        {isScrolled && pathname === '/' && (
-          <div className="flex justify-center mt-4">
-            <SearchBar expanded />
-          </div>
-        )}
       </div>
     </header>
   );

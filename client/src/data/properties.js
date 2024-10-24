@@ -121,7 +121,7 @@ export const properties = [
           'Pet Friendly'
         ],
         images: [
-          'https://images.unsplash.com/photo-1499696011496-c49e16403280',
+          'https://images.unsplash.com/photo-1584428950076-1d1c13b5d4e2?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
           'https://images.unsplash.com/photo-1560448204-603b3fc33ddc'
         ],
         rating: 4.88,
@@ -342,7 +342,73 @@ export const properties = [
           response_rate: 98,
           response_time: 'within 2 hours'
         }
-      }
+      },
+      {
+        id: 11,
+        title: 'Cape Town Waterfront Apartment',
+        description: 'Luxurious apartment located on the vibrant V&A Waterfront with panoramic views of Table Mountain.',
+        price: 420,
+        currency: '$',
+        location: 'Cape Town, South Africa',
+        beds: 2,
+        baths: 2,
+        guests: 4,
+        amenities: [
+            'Mountain Views',
+            'Waterfront Access',
+            'Rooftop Pool',
+            'Gym',
+            'Concierge Service',
+            'Private Balcony',
+            'High-Speed WiFi'
+        ],
+        images: [
+            'https://images.unsplash.com/photo-1602367381755-effb73319501?q=80&w=1966&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            'https://images.unsplash.com/photo-1560448205-17d3a46c84de?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+        ],
+        rating: 4.9,
+        reviews: 198,
+        host: {
+            name: 'Lindiwe Dlamini',
+            image: 'https://images.unsplash.com/photo-1590086782957-6b2c736ae19d',
+            response_rate: 98,
+            response_time: 'within 2 hours'
+        }
+    },
+    {
+        id: 12,
+        title: 'Durban Beachfront Villa',
+        description: 'Spacious villa located steps away from the beach, offering a perfect mix of relaxation and entertainment.',
+        price: 350,
+        currency: '$',
+        location: 'Durban, South Africa',
+        beds: 4,
+        baths: 3,
+        guests: 8,
+        amenities: [
+            'Private Pool',
+            'Beach Access',
+            'BBQ Area',
+            'Garden',
+            'Entertainment Room',
+            'Pet Friendly',
+            'High-Speed WiFi'
+        ],
+        images: [
+            'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            'https://images.unsplash.com/photo-1560448204-603b3fc33ddc'
+        ],
+        rating: 4.8,
+        reviews: 134,
+        host: {
+            name: 'Thabo Nkosi',
+            image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2',
+            response_rate: 97,
+            response_time: 'within 1 hour'
+        }
+    }
+    
+
     // Add more properties here...
   ].map((property, index) => ({
     ...property,
