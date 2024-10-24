@@ -136,8 +136,9 @@ const Header = () => {
           <GuestSelector />
         </PopoverContent>
       </Popover>
-      <Button size="icon" className="rounded-full bg-primary text-primary-foreground">
-        <Search className="h-4 w-4" />
+      <Button    size="icon" 
+        className="rounded-full bg-primary text-primary-foreground p-2 hover:bg-primary/80 transition duration-300 ease-in-out">
+       <Search className="h-6 w-6" />
       </Button>
     </div>
   );
