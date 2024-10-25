@@ -4,7 +4,7 @@ export const properties = [
       title: 'Luxury Beachfront Villa',
       description: 'Experience paradise in this stunning beachfront villa with panoramic ocean views.',
       price: 850,
-      currency: '$',
+      currency: 'R',
       location: 'Durban',
       beds: 4,
       baths: 3.5,
@@ -40,7 +40,7 @@ export const properties = [
       title: 'Mountain View Cabin',
       description: 'Cozy cabin retreat with breathtaking mountain views and modern amenities.',
       price: 275,
-      currency: '$',
+      currency: 'R',
       location: 'Cape Town',
       beds: 2,
       baths: 2,
@@ -76,7 +76,7 @@ export const properties = [
         title: 'Urban Penthouse',
         description: 'Modern penthouse with a skyline view and luxury amenities.',
         price: 600,
-        currency: '$',
+        currency: 'R',
         location: 'Gqeberha',
         beds: 3,
         baths: 2,
@@ -107,7 +107,7 @@ export const properties = [
         title: 'Forest Lodge',
         description: 'Secluded forest lodge offering tranquility and adventure.',
         price: 325,
-        currency: '$',
+        currency: 'R',
         location: 'Durban',
         beds: 3,
         baths: 2.5,
@@ -138,7 +138,7 @@ export const properties = [
         title: 'Cozy Cottage',
         description: 'Charming cottage with a garden and easy beach access.',
         price: 180,
-        currency: '$',
+        currency: 'R',
         location: 'Bloemfontein',
         beds: 2,
         baths: 1,
@@ -168,7 +168,7 @@ export const properties = [
         title: 'Lakefront Retreat',
         description: 'Serene lakefront property with private dock, kayaks, and stunning sunset views. Modern amenities blend seamlessly with natural surroundings for the perfect waterfront escape.',
         price: 275,
-        currency: '$',
+        currency: 'R',
         location: 'Cape Town',
         beds: 3,
         baths: 2,
@@ -204,7 +204,7 @@ export const properties = [
         title: 'Desert Oasis Villa',
         description: 'Modern desert retreat featuring a private pool, outdoor living spaces, and panoramic mountain views. Perfect blend of luxury and desert tranquility.',
         price: 395,
-        currency: '$',
+        currency: 'R',
         location: 'East london',
         beds: 4,
         baths: 3,
@@ -240,7 +240,7 @@ export const properties = [
         title: 'Vineyard Estate Guest House',
         description: 'Charming guest house on a working vineyard estate. Experience wine country living with private tastings, vineyard views, and luxury amenities.',
         price: 425,
-        currency: '$',
+        currency: 'R',
         location: 'Pretoria',
         beds: 2,
         baths: 2,
@@ -276,7 +276,7 @@ export const properties = [
         title: 'Coastal Contemporary Home',
         description: 'Architecturally stunning home with floor-to-ceiling windows offering breathtaking ocean views. Modern design meets coastal comfort.',
         price: 550,
-        currency: '$',
+        currency: 'R',
         location: 'East London',
         beds: 4,
         baths: 3.5,
@@ -312,7 +312,7 @@ export const properties = [
         title: 'Urban Treehouse Loft',
         description: 'Unique treehouse-inspired loft in the heart of the city. Floor-to-ceiling windows, suspended bedroom, and rooftop garden create an urban oasis.',
         price: 195,
-        currency: '$',
+        currency: 'R',
         location: 'Johannesburg',
         beds: 1,
         baths: 1,
@@ -348,7 +348,7 @@ export const properties = [
         title: 'Waterfront Apartment',
         description: 'Luxurious apartment located on the vibrant V&A Waterfront with panoramic views of Table Mountain.',
         price: 420,
-        currency: '$',
+        currency: 'R',
         location: 'Cape Town',
         beds: 2,
         baths: 2,
@@ -380,7 +380,7 @@ export const properties = [
         title: 'Beachfront Villa',
         description: 'Spacious villa located steps away from the beach, offering a perfect mix of relaxation and entertainment.',
         price: 350,
-        currency: '$',
+        currency: 'R',
         location: 'Durban',
         beds: 4,
         baths: 3,
@@ -409,10 +409,10 @@ export const properties = [
     }
     
 
-    // Add more properties here...
+    
   ].map((property, index) => ({
     ...property,
-    id: index + 1 // Ensure sequential IDs
+    id: index + 1 
   }));
 
 
