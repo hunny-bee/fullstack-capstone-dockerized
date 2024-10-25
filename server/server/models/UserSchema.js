@@ -1,61 +1,34 @@
-const mongoose = require('mongoose');
-const { Schema } = mongoose;
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+exports.loginUser = async (req, res) => {
+  const { email, password } = req.body;
 
-const UserSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  role: {
-    type: String,
-    enum: ['guest', 'host'],
-    required: true,
-  },
-  profilePicture: {
-    type: String,
-  },
-  bio: {
-    type: String,
-  },
-  listings: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Property',
-  }],
-  bookings: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Booking',
-  }],
-}, { timestamps: true });
+  try {
+    const user = await User.findOne({ email });
+    console.log('User found:', user); // Log the user object
 
-UserSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) {
-    return next();
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid email or password' });
+    }
+
+    const isMatch = await user.comparePassword(password); // Use the comparePassword method
+    console.log('Password Match:', isMatch); // Log the password match result
+
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Invalid email or password' });
+    }
+
+    const token = user.getSignedJwtToken();
+    res.status(200).json({
+      success: true,
+      token,
+      data: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
-
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
-});
-
-UserSchema.methods.comparePassword = async function (password) {
-  return bcrypt.compare(password, this.password);
 };
-
-UserSchema.methods.getSignedJwtToken = function () {
-  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
-    expiresIn: '1h',
-  });
-};
-
-module.exports = mongoose.model('User', UserSchema);
