@@ -27,10 +27,12 @@ html, body {
 
 /* Body Styles */
 body {
+  
   color: rgb(var(--foreground-rgb));
   background: rgb(var(--background-rgb));
-  padding-top: 6rem; /* Adjust this based on header height */
+  padding-top: 6rem;
 }
+
 
 /* Navbar styles */
 .navbar {
@@ -111,3 +113,5 @@ body {
 .glow {
   text-shadow: 0 0 5px #fadb5e, 0 0 10px #fadb5e, 0 0 15px #fadb5e;
 }
+
+

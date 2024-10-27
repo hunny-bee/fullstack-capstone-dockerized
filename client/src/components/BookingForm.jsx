@@ -26,7 +26,7 @@ export default function BookingForm({ propertyId, price }) {
       });
       const data = await response.json();
       console.log('Booking created:', data);
-      // Handle successful booking (e.g., show confirmation, redirect)
+      
     } catch (error) {
       console.error('Error creating booking:', error);
     }

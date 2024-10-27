@@ -1,23 +1,17 @@
-// pages/listings/[id].js
-import ListingDetails from "@/components/ListingDetails"; 
-import { getListing } from '@/lib/api';
 
 export async function getServerSideProps({ params }) {
   try {
     const response = await getListing(params.id);
+    console.log('Listing data:', response.data); 
     return {
       props: {
-        listing: response.data, // Pass the listing data to the component
+        listing: response.data, 
       },
     };
   } catch (error) {
     console.error('Error fetching listing details:', error);
     return {
-      notFound: true, // Return 404 page if the listing is not found
+      notFound: true, 
     };
   }
-}
-
-export default function ListingDetailsPage({ listing }) {
-  return <ListingDetails listing={listing} />;
 }
