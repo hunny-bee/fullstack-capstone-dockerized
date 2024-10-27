@@ -1,6 +1,7 @@
+
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useTheme } from 'next-themes';
 import { useRouter, usePathname } from 'next/navigation';
 import { Search, Globe, Menu, User, ChevronDown } from 'lucide-react';
@@ -8,20 +9,20 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { useTranslation } from '@/lib/i18n/useTranslation';
+import { SearchContext } from '@/app/layout';
 
-const Header = () => {
+const Header = ({ onSearch }) => {
   const router = useRouter();
   const pathname = usePathname();
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { theme, setTheme } = useTheme();
+  const { setSearchParams } = useContext(SearchContext);
+  const [location, setLocation] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [checkInDate, setCheckInDate] = useState();
   const [checkOutDate, setCheckOutDate] = useState();
   const [guests, setGuests] = useState({ adults: 0, children: 0, infants: 0, pets: 0 });
@@ -33,7 +34,14 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const cities = [
+  const handleLogoClick = () => {
+    setSearchParams({ location: '', guests: null });
+    setLocation('');
+    setGuests({ adults: 0, children: 0, infants: 0, pets: 0 });
+    router.push('/');
+  };
+
+  const locations = [
     'Cape Town', 
     'Johannesburg', 
     'Durban', 
@@ -43,6 +51,10 @@ const Header = () => {
     'East London'
   ];
 
+  const filteredLocations = locations.filter(loc =>
+    loc.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const languages = [
     { name: 'English', code: 'en' },
     { name: 'Português', code: 'pt' },
@@ -51,27 +63,53 @@ const Header = () => {
     { name: '中文', code: 'zh' },
   ];
 
-  const handleNavigation = (path) => {
-    router.push(path);
+  const handleSearch = () => {
+    if (location) {
+      onSearch?.({ location, guests });
+      router.push(`/propertylisting?location=${encodeURIComponent(location)}`);
+      setIsSearchOpen(false);
+    }
+  };
+
+  const handleLocationSelect = (loc) => {
+    setLocation(loc);
+    setSearchTerm(''); 
+    setIsSearchOpen(false); 
   };
 
   const GuestSelector = () => (
     <div className="space-y-4">
-      {['adults', 'children', 'infants', 'pets'].map((type) => (
+      {Object.entries(guests).map(([type, count]) => (
         <div key={type} className="flex items-center justify-between">
-          <span className="capitalize">{type}</span>
+          <div>
+            <p className="capitalize font-medium">{type}</p>
+            <p className="text-sm text-muted-foreground">
+              {type === 'infants' ? 'Under 2 years' : type === 'children' ? '2-12 years' : type === 'pets' ? 'Bringing a service animal?' : 'Age 13+'}
+            </p>
+          </div>
           <div className="flex items-center space-x-2">
             <Button
               size="sm"
               variant="outline"
-              onClick={() => setGuests((prev) => ({ ...prev, [type]: Math.max(0, prev[type] - 1) }))}>
+              onClick={() => {
+                const newGuests = { ...guests, [type]: Math.max(0, guests[type] - 1) };
+                setGuests(newGuests);
+              }}
+              disabled={count === 0}
+              aria-label={`Decrease number of ${type}`}
+            >
               -
             </Button>
-            <span>{guests[type]}</span>
+            <span className="w-8 text-center">{count}</span>
             <Button
               size="sm"
               variant="outline"
-              onClick={() => setGuests((prev) => ({ ...prev, [type]: prev[type] + 1 }))}>
+              onClick={() => {
+                const newGuests = { ...guests, [type]: guests[type] + 1 };
+                setGuests(newGuests);
+              }}
+              aria-label={`Increase number of ${type}`}
+            >
               +
             </Button>
           </div>
@@ -82,32 +120,48 @@ const Header = () => {
 
   const SearchBar = () => (
     <div className="flex items-center space-x-4 bg-background rounded-full shadow-md p-2 max-w-4xl mx-auto">
-      <Popover>
+      <Popover open={isSearchOpen} onOpenChange={setIsSearchOpen}>
         <PopoverTrigger asChild>
-          <Button variant="ghost" className="w-full justify-start">
-            <span className="mr-2">Where</span>
+          <Button variant="ghost" className="w-[150px] justify-start font-normal">
+            <span className="mr-2">{location || 'Where'}</span>
             <ChevronDown className="h-4 w-4 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[200px] p-0">
-          <Select>
-            <SelectTrigger>
-              <SelectValue placeholder="Select a city" />
-            </SelectTrigger>
-            <SelectContent>
-              {cities.map((city) => (
-                <SelectItem key={city} value={city.toLowerCase()}>
-                  {city}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+        <PopoverContent className="w-[300px] p-4" align="start">
+          <div className="space-y-4">
+            <Input
+              placeholder={t('searchLocations')}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full"
+              aria-label="Search location"
+            />
+            <div className="max-h-[200px] overflow-y-auto space-y-2">
+              {filteredLocations.length === 0 ? (
+                <p className="text-sm text-muted-foreground p-2">{t('noLocationFound')}</p>
+              ) : (
+                filteredLocations.map((loc) => (
+                  <Button
+                    key={loc}
+                    variant="ghost"
+                    className="w-full justify-start"
+                    onClick={() => handleLocationSelect(loc)}
+                    aria-label={`Select ${loc} as location`}
+                  >
+                    {loc}
+                  </Button>
+                ))
+              )}
+            </div>
+          </div>
         </PopoverContent>
       </Popover>
+
       <div className="h-6 w-px bg-border" />
+
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="ghost">
+          <Button variant="ghost" aria-label="Check-in date">
             {checkInDate ? checkInDate.toLocaleDateString() : 'Check in'}
           </Button>
         </PopoverTrigger>
@@ -115,10 +169,12 @@ const Header = () => {
           <Calendar mode="single" selected={checkInDate} onSelect={setCheckInDate} initialFocus />
         </PopoverContent>
       </Popover>
+
       <div className="h-6 w-px bg-border" />
+
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="ghost">
+          <Button variant="ghost" aria-label="Check-out date">
             {checkOutDate ? checkOutDate.toLocaleDateString() : 'Check out'}
           </Button>
         </PopoverTrigger>
@@ -126,11 +182,17 @@ const Header = () => {
           <Calendar mode="single" selected={checkOutDate} onSelect={setCheckOutDate} initialFocus />
         </PopoverContent>
       </Popover>
+
       <div className="h-6 w-px bg-border" />
+
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="ghost" className="w-full justify-start">
-            <span className="mr-2">Who</span>
+          <Button variant="ghost" className="w-full justify-start" aria-label="Number of guests">
+            <span className="mr-2">
+              {Object.values(guests).reduce((a, b) => a + b, 0) > 0
+                ? `${Object.values(guests).reduce((a, b) => a + b, 0)} guests`
+                : 'Who'}
+            </span>
             <ChevronDown className="h-4 w-4 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -138,7 +200,13 @@ const Header = () => {
           <GuestSelector />
         </PopoverContent>
       </Popover>
-      <Button size="icon" className="rounded-full bg-primary text-primary-foreground p-2 hover:bg-primary/80 transition duration-300 ease-in-out">
+
+      <Button 
+        size="icon" 
+        className="rounded-full bg-primary text-primary-foreground p-2 hover:bg-primary/80 transition duration-300 ease-in-out"
+        onClick={handleSearch}
+        aria-label="Search properties"
+      >
         <Search className="h-6 w-6" />
       </Button>
     </div>
@@ -147,58 +215,55 @@ const Header = () => {
   return (
     <header className={cn(
       'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-      isScrolled ? 'bg-white shadow-md py-4' : 'bg-white py-6'
+      isScrolled ?  'bg-white shadow-md py-3 ' : 'bg-white py-4'
     )}>
-      <div className="container mx-auto px-4">
-        <div className={cn(
-          'flex items-center transition-all duration-300',
-          isScrolled ? 'flex-col space-y-4 md:flex-row md:space-y-0 md:justify-between' : 'justify-between'
-        )}>
-          <div className="flex items-center cursor-pointer" onClick={() => handleNavigation('/')}>
+      <div className="flex items-center justify-between max-w-7xl mx-auto py-4 px-4">
+      <div className="flex items-center cursor-pointer" onClick={handleLogoClick}>
             <svg className="w-8 h-8 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205l3 1m1.5.5l-1.5-.5M6.75 7.364V3h-3v18m3-13.636l10.5-3.819" />
             </svg>
             <span className="ml-2 text-xl font-bold text-primary">StayCation</span>
           </div>
-
-          <SearchBar />
-
-          <nav className="flex items-center space-x-4">
-            <Button variant="ghost" onClick={() => handleNavigation('/host')}>
-              StayCation your home
+        <SearchBar />
+        <nav className="flex items-center space-x-4">
+        <Button variant="ghost" onClick={() => router.push('/host')} aria-label={t('hostYourHome')}>
+          {t('hostYourHome')}
+        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="icon" className="hidden md:flex">
+              <Globe className="h-5 w-5" />
             </Button>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Globe className="h-5 w-5" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                {languages.map((lang) => (
-                  <DropdownMenuItem key={lang.code} onClick={() => console.log(`Changed to ${lang.name}`)}>
-                    {lang.name}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="rounded-full">
-                  <Menu className="h-5 w-5 mr-2" />
-                  <User className="h-5 w-5" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => handleNavigation('/signup')}>Sign up</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleNavigation('/login')}>Log in</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => console.log('Logged out')}>Log out</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </nav>
-        </div>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" >
+            {languages.map((lang) => (
+              <DropdownMenuItem key={lang.code} onClick={() => changeLanguage(lang.code)}>
+                {lang.name}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="rounded-full">
+              <Menu className="h-5 w-5 mr-2"/>
+              <User className="h-5 w-5"  />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => router.push('/signup')}>{t('signUp')}</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push('/login')}>{t('logIn')}</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push('/host')}>{t('hostYourHome')}</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push('/host-experience')}>{t('hostExperience')}</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push('/help')}>{t('helpCenter')}</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </nav>
+    
       </div>
     </header>
   );
 };
 
 export default Header;
+

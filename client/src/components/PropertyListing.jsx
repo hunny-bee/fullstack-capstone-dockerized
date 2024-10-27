@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState } from 'react';
@@ -17,10 +18,10 @@ export default function PropertyListing() {
   };
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto px-4 pb-20">
       <div className="flex flex-col items-center mb-8 py-11 text-center">
-        {/* <h1 className="text-4xl font-bold mb-4">Find your next stay</h1>
-        <p className="text-gray-600 mb-6">Discover amazing properties for your perfect getaway</p> */}
+
+      <h1 className="text-4xl font-bold mb-4">Incredible holiday specials to be experienced in SA!</h1>
       </div>
 
       {view === 'list' ? (

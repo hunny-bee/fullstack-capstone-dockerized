@@ -1,3 +1,6 @@
+
+
+
 'use client';
 
 import React from 'react';
@@ -11,6 +14,7 @@ export default function BookingsPage() {
   const router = useRouter();
   const { user } = useAuth();
 
+  
   if (!user) {
     router.push('/auth/login?redirect=/bookings');
     return null;

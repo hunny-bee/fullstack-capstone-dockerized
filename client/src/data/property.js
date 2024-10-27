@@ -1,4 +1,4 @@
-export const properties = [
+ const properties = [
     {
       id: 1,
       title: 'Luxury Beachfront Villa',
@@ -410,10 +410,5 @@ export const properties = [
     
 
     
-  ].map((property, index) => ({
-    ...property,
-    id: index + 1 
-  }));
-
- 
-
+  ]
+  export default properties; 

@@ -1,4 +1,5 @@
-"use client";
+
+'use client';
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -23,6 +24,7 @@ export default function BookingConfirmation() {
   const [isLoading, setIsLoading] = useState(false);
   const [authMethod, setAuthMethod] = useState(null);
 
+  
   useEffect(() => {
     const storedBooking = localStorage.getItem('pendingBooking');
     if (!storedBooking) {
@@ -32,6 +34,7 @@ export default function BookingConfirmation() {
     setBooking(JSON.parse(storedBooking));
   }, [router]);
 
+  
   const handleContinueWithPhone = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -57,6 +60,7 @@ export default function BookingConfirmation() {
     }
   };
 
+  
   const handleContinueWithEmail = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -82,14 +86,18 @@ export default function BookingConfirmation() {
     }
   };
 
+  
+  
   const handlePayment = async () => {
     toast({
       title: "Booking Confirmed",
       description: "Your booking has been successfully processed.",
     });
-    router.push('/bookings');
+    router.push('/payment');
   };
 
+  
+  
   const calculateNights = () => {
     return booking && booking.dateRange
       ? Math.ceil((new Date(booking.dateRange.to) - new Date(booking.dateRange.from)) / (1000 * 60 * 60 * 24))
@@ -179,16 +187,16 @@ export default function BookingConfirmation() {
                 <form onSubmit={handleContinueWithEmail} className="space-y-4">
                   <div className="space-y-1">
                     <Input
-                      placeholder="Email"
                       type="email"
+                      placeholder="Email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
                   <div className="space-y-1">
                     <Input
-                      placeholder="Password"
                       type="password"
+                      placeholder="Password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                     />
@@ -201,26 +209,13 @@ export default function BookingConfirmation() {
             </section>
           ) : (
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold mb-4">Payment</h2>
-              <Button onClick={handlePayment}>Confirm Payment</Button>
+              <h2 className="text-2xl font-semibold mb-4">Payment Information</h2>
+              <Button onClick={handlePayment} className="w-full">
+                Proceed to Payment
+              </Button>
             </section>
           )}
         </div>
-
-        <Card className="col-span-1">
-          <div className="p-4">
-            <h3 className="font-medium">Booking Summary</h3>
-            {booking.room ? (
-              <>
-                <p>{booking.room.name}</p>
-                <p>{calculateNights()} nights</p>
-                <p>${booking.price}</p>
-              </>
-            ) : (
-              <p>No room information available.</p>
-            )}
-          </div>
-        </Card>
       </div>
     </div>
   );
